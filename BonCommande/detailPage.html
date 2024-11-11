@@ -250,99 +250,101 @@ function deleteRow() {
 // :::::::PDF TELECHARGEMENT/////////
 
 // Initialisation des dépendances pour html2canvas et jsPDF
-window.html2canvas = html2canvas;
-    window.jsPDF = window.jspdf.jsPDF;
+// window.html2canvas = html2canvas;
+//     window.jsPDF = window.jspdf.jsPDF;
 
-    // Fonction makePDF pour capturer et sauvegarder en PDF
-    function makePDF() {
-        html2canvas(document.querySelector("#capture"), {
-            allowTaint: true,
-            useCORS: true,
-            scale: 1
-        }).then(canvas => {
-            const img = canvas.toDataURL("image/png");
-            const doc = new jsPDF();
-            doc.addImage(img, 'PNG', 10, 10, 190, 0);
-            doc.save("plomberie.pdf");
-        });
-    }
+//     // Fonction makePDF pour capturer et sauvegarder en PDF
+//     function makePDF() {
+//         html2canvas(document.querySelector("#capture"), {
+//             allowTaint: true,
+//             useCORS: true,
+//             scale: 1
+//         }).then(canvas => {
+//             const img = canvas.toDataURL("image/png");
+//             const doc = new jsPDF();
+//             doc.addImage(img, 'PNG', 10, 10, 190, 0);
+//             doc.save("plomberie.pdf");
+//         });
+//     }
 
-    // Affichage des détails de commande, avec vérification
-    function displayCommandDetails() {
-        const commandId = getParameterByName('id');
-        const existingCommands = JSON.parse(localStorage.getItem("commands")) || [];
-        const commandIndex = parseInt(commandId, 10);
+//     // Affichage des détails de commande, avec vérification
+//     function displayCommandDetails() {
+//         const commandId = getParameterByName('id');
+//         const existingCommands = JSON.parse(localStorage.getItem("commands")) || [];
+//         const commandIndex = parseInt(commandId, 10);
 
-        if (!isNaN(commandIndex) && existingCommands[commandIndex]) {
-            const command = existingCommands[commandIndex];
-            document.getElementById("dateCommandDetail").innerText = `Date: ${command.dateCommand || "Non disponible"}`;
-            document.getElementById("numBonCommandDetail").innerText = `Numéro de bon: ${command.numBonCommand || "Non disponible"}`;
-            document.getElementById("doitCommandDetail").innerText = `Doit: ${command.doitCommand || "Non disponible"}`;
-            document.getElementById("addresCommandDetail").innerText = `Adresse: ${command.addresCommand || "Non disponible"}`;
+//         if (!isNaN(commandIndex) && existingCommands[commandIndex]) {
+//             const command = existingCommands[commandIndex];
+//             document.getElementById("dateCommandDetail").innerText = `Date: ${command.dateCommand || "Non disponible"}`;
+//             document.getElementById("numBonCommandDetail").innerText = `Numéro de bon: ${command.numBonCommand || "Non disponible"}`;
+//             document.getElementById("doitCommandDetail").innerText = `Doit: ${command.doitCommand || "Non disponible"}`;
+//             document.getElementById("addresCommandDetail").innerText = `Adresse: ${command.addresCommand || "Non disponible"}`;
 
-            const temporaryCommandsDetail = document.getElementById("temporaryCommandsDetail");
-            temporaryCommandsDetail.innerHTML = "";
+//             const temporaryCommandsDetail = document.getElementById("temporaryCommandsDetail");
+//             temporaryCommandsDetail.innerHTML = "";
 
-            if (Array.isArray(command.temporaryCommands)) {
-                command.temporaryCommands.forEach((item, index) => {
-                    const row = document.createElement("tr");
-                    row.innerHTML = `
-                        <td style="text-align: center;">${item.designCommand || "Non disponible"}</td>
-                        <td style="text-align: center;">${item.quantite || "Non disponible"}</td>
-                        <td style="text-align: center;">${item.uniteCommand || "Non disponible"}</td>
-                        ${index === 0 ? `<td style="text-align: center;" rowspan="${command.temporaryCommands.length}">${command.observations || ""}</td>` : ""}
-                    `;
-                    row.addEventListener("click", () => openModal(item, command));
-                    temporaryCommandsDetail.appendChild(row);
-                });
-            }
-        } else {
-            alert("Commande non trouvée");
-        }
-    }
+//             if (Array.isArray(command.temporaryCommands)) {
+//                 command.temporaryCommands.forEach((item, index) => {
+//                     const row = document.createElement("tr");
+//                     row.innerHTML = `
+//                         <td style="text-align: center;">${item.designCommand || "Non disponible"}</td>
+//                         <td style="text-align: center;">${item.quantite || "Non disponible"}</td>
+//                         <td style="text-align: center;">${item.uniteCommand || "Non disponible"}</td>
+//                         ${index === 0 ? `<td style="text-align: center;" rowspan="${command.temporaryCommands.length}">${command.observations || ""}</td>` : ""}
+//                     `;
+//                     row.addEventListener("click", () => openModal(item, command));
+//                     temporaryCommandsDetail.appendChild(row);
+//                 });
+//             }
+//         } else {
+//             alert("Commande non trouvée");
+//         }
+//     }
 
-    // Initialisation au chargement
-    window.onload = displayCommandDetails;
+//     // Initialisation au chargement
+//     window.onload = displayCommandDetails;
 
 // Transformation en image
-// window.html2canvas = html2canvas;
-// window.jsPDF = window.jspdf.jsPDF;
+window.html2canvas = html2canvas;
+window.jsPDF = window.jspdf.jsPDF;
 
-// function makePDF() {
-//   html2canvas(document.querySelector("#capture"), {
-//     allowTaint: true,
-//     useCORS: true,
-//     scale: 1
-//   }).then(canvas => {
-//     var img = canvas.toDataURL("image/png");
+function makePDF() {
+  html2canvas(document.querySelector("#capture"), {
+    allowTaint: true,
+    useCORS: true,
+    scale: 1
+  }).then(canvas => {
+    var img = canvas.toDataURL("image/png");
 
-//     var doc = new jsPDF();
-//     doc.setFont('Arial');
-//     doc.save("plomberie.pdf");
-//   });
-// }
+    var doc = new jsPDF();
+    doc.setFont('Arial');
+    doc.save("plomberie.pdf");
+  });
+}
 
-// function downloadPDF() {
-//   var element = document.querySelector(".telechargerpdf");
-//   html2canvas(element, {
-//     scale: 2,
-//     scrollX: 0,
-//     scrollY: 0,
-//     windowWidth: document.documentElement.offsetWidth,
-//     windowHeight: document.documentElement.offsetHeight,
-//     useCORS: true
-//   }).then(function (canvas) {
-//     var imgData = canvas.toDataURL("image/png", 1.0);
-//     var pdf = new jsPDF("p", "mm", "a4", true);
-//     var width = pdf.internal.pageSize.getWidth();
-//     var height = pdf.internal.pageSize.getHeight();
+function downloadPDF() {
+  var element = document.querySelector(".telechargerpdf");
+  html2canvas(element, {
+    scale: 2,
+    scrollX: 0,
+    scrollY: 0,
+    windowWidth: document.documentElement.offsetWidth,
+    windowHeight: document.documentElement.offsetHeight,
+    useCORS: true
+  }).then(function (canvas) {
+    var imgData = canvas.toDataURL("image/png", 1.0);
+    var pdf = new jsPDF("p", "mm", "a4", true);
+    var width = pdf.internal.pageSize.getWidth();
+    var height = pdf.internal.pageSize.getHeight();
 
-//     pdf.addImage(imgData, "PNG", 0, 0, width, height);
-//     pdf.save("plomberie.pdf");
-//   });
-// }
-// document.getElementById("telecharger").addEventListener("click", function () {
-//   downloadPDF();
-// });         
+    pdf.addImage(imgData, "PNG", 0, 0, width, height);
+    pdf.save("plomberie.pdf");
+  });
+}
+document.getElementById("telecharger").addEventListener("click", function () {
+  downloadPDF();
+});         
  
+     // Initialisation au chargement
+    window.onload = displayCommandDetails;
 </script>
