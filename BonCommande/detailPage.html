@@ -282,21 +282,29 @@ window.html2canvas = html2canvas;
     // Ajoutez une classe pour le style PDF
     container.classList.add("pdf-style");
 
-    html2canvas(container, {
-    allowTaint: true,
-    useCORS: true,
-    scale: 1 // Diminuez l’échelle pour réduire la taille du rendu
-}).then(canvas => {
-    const imgData = canvas.toDataURL("image/png");
+    const captureElement = document.getElementById("capture");
 
+html2canvas(captureElement, { scale: 1 }).then(canvas => {
+    const pdf = new jsPDF("p", "mm", "a4");
     const pdfWidth = pdf.internal.pageSize.getWidth();
     const pdfHeight = pdf.internal.pageSize.getHeight();
+    const imgData = canvas.toDataURL("image/png");
 
-    // Calculer la largeur et la hauteur en gardant les proportions
-    const imgWidth = pdfWidth;
-    const imgHeight = (canvas.height * pdfWidth) / canvas.width;
+    let imgHeight = (canvas.height * pdfWidth) / canvas.width;
+    let position = 0;
 
-    pdf.addImage(imgData, 'PNG', 0, 0, imgWidth, imgHeight);
+    // Diviser le contenu en plusieurs pages si nécessaire
+    while (position < imgHeight) {
+        pdf.addImage(imgData, "PNG", 0, position, pdfWidth, imgHeight);
+
+        // Si le contenu dépasse la hauteur de la page, créez une nouvelle page
+        if (position + pdfHeight < imgHeight) {
+            pdf.addPage();
+        }
+
+        position += pdfHeight;
+    }
+
     pdf.save("document.pdf");
 });
 
