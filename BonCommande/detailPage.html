@@ -313,6 +313,15 @@ window.html2canvas = html2canvas;
         // Paramètres pour le footer
         pdf.setFontSize(10);
         let yPosition = pdfHeight - 40;
+        
+        // Dimensions du footer
+        const footerHeight = 45; // Hauteur totale du footer (ajustez si nécessaire)
+        const footerMargin = 10; // Marge horizontale de chaque côté
+
+        // Dessiner la bordure autour du footer
+        pdf.setDrawColor(0, 0, 0); // Noir pour la bordure
+        pdf.setLineWidth(0.5); // Épaisseur de la bordure
+        pdf.rect(footerMargin, pdfHeight - footerHeight, pdfWidth - 2 * footerMargin, footerHeight, "S"); // Rectangle de bordure
 
         // Ajout de chaque ligne du footer, centré
         footerContent.forEach(line => {
