@@ -275,8 +275,7 @@ window.html2canvas = html2canvas;
     window.jsPDF = window.jspdf.jsPDF;
 
     // Fonction makePDF pour capturer et sauvegarder en PDF
-    // Fonction makePDF pour capturer et sauvegarder en PDF
-function makePDF() {
+    function makePDF() {
     const pdf = new jsPDF("p", "mm", "a4");
     const container = document.querySelector(".container");
 
@@ -300,15 +299,23 @@ function makePDF() {
         // Ajouter l'image au PDF
         pdf.addImage(imgData, 'PNG', 0, 0, imgWidth, imgHeight);
 
-        // Récupérer le contenu du footer existant (par son ID)
-        const footerContent = document.getElementById("capture").innerText;
+        // Footer content (récupérer l'élément footer HTML)
+        const footerContent = document.querySelector("footer").innerHTML;
 
-        // Ajouter le footer au bas de la page
+        // Créer un élément temporaire pour dessiner le footer
+        const footerDiv = document.createElement('div');
+        footerDiv.innerHTML = footerContent;
+
+        // Appliquer les styles du footer
+        const footerText = footerDiv.textContent || footerDiv.innerText; // obtenir le texte brut du footer
+
+        // Ajouter le footer manuellement au bas du PDF
+        const footerHeight = 30; // Ajustez la hauteur du footer si nécessaire
         pdf.setFontSize(10);
-        pdf.setTextColor(0, 0, 0); // Couleur noire pour le footer
-        pdf.text(footerContent, 10, pdfHeight - 10);
+        pdf.setTextColor(0, 0, 255); // Appliquer la couleur bleue pour le texte
+        pdf.text(footerText, 10, pdfHeight - footerHeight);
 
-        // Sauvegarder le PDF
+        // Enregistrer le PDF
         pdf.save("document.pdf");
     });
 }
