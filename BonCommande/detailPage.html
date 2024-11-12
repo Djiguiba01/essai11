@@ -58,6 +58,14 @@
             </table>
         </section>
 
+        <div class="accordrecept" style="display: flex;justify-content: space-between;">
+            <div class="daucheacord">
+                POUR Récéption
+            </div>
+            <div class="droitaccord">
+                LE Fournisseur
+            </div>
+        </div>
         <!-- :::::::::::::::::::::::::::::::::::::: -->
         <!-- <footer>
             <p style="color: blue;"><strong style="color: red;">Direction Generale: </strong> Bamako-Mali- Hamdallaye ACI 2000 Immeuble ABK-6 B103</p>
@@ -78,7 +86,9 @@
                 <p style="color: blue;"> <strong style="font-weight: bold;">NINA:</strong>
                 42009194223006T - <strong style="font-weight: bold;">RCCM:</strong> MA.BKO. 2020.B B5. DU 03/01/2020 - <strong>NIF:</strong>082247104J</p>
             </footer> -->
-    </div>
+    
+    
+        </div>
 </div>
     
 
@@ -276,6 +286,68 @@ window.html2canvas = html2canvas;
 
     // Fonction makePDF pour capturer et sauvegarder en PDF
     // Fonction makePDF pour capturer et sauvegarder en PDF
+// function makePDF() {
+//     const pdf = new jsPDF("p", "mm", "a4");
+//     const container = document.querySelector(".container");
+
+//     // Ajout de la classe pour le style PDF
+//     container.classList.add("pdf-style");
+
+//     html2canvas(container, {
+//         allowTaint: true,
+//         useCORS: true,
+//         scale: 1
+//     }).then(canvas => {
+//         const imgData = canvas.toDataURL("image/png");
+
+//         const pdfWidth = pdf.internal.pageSize.getWidth();
+//         const pdfHeight = pdf.internal.pageSize.getHeight();
+
+//         const imgWidth = pdfWidth;
+//         const imgHeight = (canvas.height * pdfWidth) / canvas.width;
+
+//         // Ajouter l'image du contenu principal au PDF
+//         pdf.addImage(imgData, 'PNG', 0, 0, imgWidth, imgHeight);
+
+//         // Contenu du footer (sans image)
+//         const footerContent = [
+//             { text: "Direction Generale: Bamako-Mali- Hamdallaye ACI 2000 Immeuble ABK-6 B103", color: [0, 0, 255] },
+//             { text: "Tél: +223 76 02 34 71 6 66 02 34 71 - 61 96 17 94 - 20 74 04 48 / E-mail: sankoreservices@gmail.com", color: [0, 0, 255] },
+//             { text: "www.sankoreservices.com - sankoreservices@yahoo.fr", color: [0, 0, 255] },
+//             { text: "Bureau de Mopti-Sévaré: Socoura en face de l'IFP de Sévaré", color: [0, 0, 255] },
+//             { text: "Tél: +223 91 00 00 47 - 91 00 00 48 - 20 29 17 14 - 21 42 19 17", color: [0, 0, 255] },
+//             { text: "Bureau de Tombouctou: Sareikeina Albamé-Derrière la Mairie de Tbt-tel: 66 69 55 92", color: [255, 0, 0] },
+//             { text: "Bureau de Gao: Aldjanabandia-4ème Quartier à coté de la Mare - Tél: 76 18 43 97", color: [15, 146, 85] },
+//             { text: "NINA: 42009194223006T - RCCM: MA.BKO. 2020.B B5. DU 03/01/2020 - NIF: 082247104J", color: [0, 0, 139] }
+//         ];
+
+//         // Paramètres pour le footer
+//         pdf.setFontSize(10);
+//         let yPosition = pdfHeight - 42; // Décalage de 2 pixels vers le haut (pdfHeight - 40 - 2)
+
+//         // Dimensions du footer
+//         const footerHeight = 45; // Hauteur totale du footer
+//         const footerMargin = 10; // Marge horizontale de chaque côté
+
+//         // Dessiner la bordure autour du footer
+//         pdf.setDrawColor(0, 0, 255);
+//         pdf.setLineWidth(0.5);
+//         pdf.rect(footerMargin, pdfHeight - footerHeight - 2, pdfWidth - 2 * footerMargin, footerHeight, "S"); // Décalage de 2 pixels vers le haut
+
+//         // Ajout de chaque ligne du footer, centré
+//         footerContent.forEach(line => {
+//             pdf.setTextColor(...line.color);
+//             const textWidth = pdf.getTextWidth(line.text);
+//             const centeredX = (pdfWidth - textWidth) / 2;
+//             pdf.text(line.text, centeredX, yPosition);
+//             yPosition += 5; // Espace entre les lignes
+//         });
+
+//         // Enregistrer le PDF
+//         pdf.save("document.pdf");
+//     });
+// }
+
 function makePDF() {
     const pdf = new jsPDF("p", "mm", "a4");
     const container = document.querySelector(".container");
@@ -299,6 +371,12 @@ function makePDF() {
         // Ajouter l'image du contenu principal au PDF
         pdf.addImage(imgData, 'PNG', 0, 0, imgWidth, imgHeight);
 
+        // Contenu pour la section "POUR Réception / LE Fournisseur"
+        const accordSection = [
+            { text: "POUR Réception", x: 20, color: [0, 0, 0] }, // À gauche
+            { text: "LE Fournisseur", x: pdfWidth - 60, color: [0, 0, 0] } // À droite
+        ];
+
         // Contenu du footer (sans image)
         const footerContent = [
             { text: "Direction Generale: Bamako-Mali- Hamdallaye ACI 2000 Immeuble ABK-6 B103", color: [0, 0, 255] },
@@ -313,7 +391,15 @@ function makePDF() {
 
         // Paramètres pour le footer
         pdf.setFontSize(10);
-        let yPosition = pdfHeight - 42; // Décalage de 2 pixels vers le haut (pdfHeight - 40 - 2)
+        let yPosition = pdfHeight - 72; // Ajustement pour placer la section à 30px au-dessus du footer
+
+        // Ajouter la section "POUR Réception / LE Fournisseur" en haut du footer
+        accordSection.forEach(line => {
+            pdf.setTextColor(...line.color);
+            pdf.text(line.text, line.x, yPosition); // Placer le texte
+        });
+
+        yPosition += 10; // Espace entre la section accord et le début du footer
 
         // Dimensions du footer
         const footerHeight = 45; // Hauteur totale du footer
@@ -337,7 +423,6 @@ function makePDF() {
         pdf.save("document.pdf");
     });
 }
-
 
 
     // Affichage des détails de commande, avec vérification
