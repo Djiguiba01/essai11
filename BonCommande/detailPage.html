@@ -275,7 +275,8 @@ window.html2canvas = html2canvas;
     window.jsPDF = window.jspdf.jsPDF;
 
     // Fonction makePDF pour capturer et sauvegarder en PDF
-    function makePDF() {
+    // Fonction makePDF pour capturer et sauvegarder en PDF
+function makePDF() {
     const pdf = new jsPDF("p", "mm", "a4");
     const container = document.querySelector(".container");
 
@@ -296,9 +297,7 @@ window.html2canvas = html2canvas;
         const imgHeight = (canvas.height * pdfWidth) / canvas.width;
 
         // Ajouter l'image du contenu principal au PDF
-        // pdf.addImage(imgData, 'PNG', 0, 0, imgWidth, imgHeight);
-        pdf.addImage(footerImgData, 'PNG', 0, pdfHeight - footerHeight - 2, pdfWidth, footerHeight);
-
+        pdf.addImage(imgData, 'PNG', 0, 0, imgWidth, imgHeight);
 
         // Contenu du footer
         const footerContent = [
@@ -314,16 +313,16 @@ window.html2canvas = html2canvas;
 
         // Paramètres pour le footer
         pdf.setFontSize(10);
-        let yPosition = pdfHeight - 40;
-        
+        let yPosition = pdfHeight - 38; // Réduction de 2px pour monter le footer
+
         // Dimensions du footer
-        const footerHeight = 45; // Hauteur totale du footer (ajustez si nécessaire)
+        const footerHeight = 45; // Hauteur totale du footer
         const footerMargin = 10; // Marge horizontale de chaque côté
 
         // Dessiner la bordure autour du footer
-        pdf.setDrawColor(0, 0, 255); // Noir pour la bordure
+        pdf.setDrawColor(0, 0, 255); // Bleu pour la bordure
         pdf.setLineWidth(0.5); // Épaisseur de la bordure
-        pdf.rect(footerMargin, pdfHeight - footerHeight, pdfWidth - 2 * footerMargin, footerHeight, "S"); // Rectangle de bordure
+        pdf.rect(footerMargin, pdfHeight - footerHeight - 2, pdfWidth - 2 * footerMargin, footerHeight, "S"); // Déplace la bordure du footer vers le haut de 2px
 
         // Ajout de chaque ligne du footer, centré
         footerContent.forEach(line => {
