@@ -255,26 +255,27 @@ window.html2canvas = html2canvas;
 
     // Fonction makePDF pour capturer et sauvegarder en PDF
     function makePDF() {
-    // Dimensions pour une page A4
     const pdf = new jsPDF("p", "mm", "a4");
-    const canvasElement = document.querySelector("#capture");
+    const container = document.querySelector(".container");
 
-    html2canvas(canvasElement, {
+    // Ajoutez une classe pour le style PDF
+    container.classList.add("pdf-style");
+
+    html2canvas(container, {
         allowTaint: true,
         useCORS: true,
-        scale: 2 // Augmente la résolution pour améliorer la qualité
+        scale: 2
     }).then(canvas => {
         const imgData = canvas.toDataURL("image/png");
         
-        // Récupérer les dimensions de la page A4 (210 mm x 297 mm)
         const pdfWidth = pdf.internal.pageSize.getWidth();
         const pdfHeight = pdf.internal.pageSize.getHeight();
 
-        // Ajouter l'image au PDF et ajuster sa taille pour remplir la page A4
         pdf.addImage(imgData, 'PNG', 0, 0, pdfWidth, pdfHeight);
-
-        // Sauvegarder le fichier PDF
         pdf.save("document.pdf");
+
+        // Retirez la classe après la capture
+        container.classList.remove("pdf-style");
     });
 }
 
