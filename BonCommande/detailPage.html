@@ -282,34 +282,38 @@ window.html2canvas = html2canvas;
     // Ajoutez une classe pour le style PDF
     container.classList.add("pdf-style");
 
-    const captureElement = document.getElementById("capture");
+    html2canvas(container, {
+        allowTaint: true,
+        useCORS: true,
+        scale: 1 // Diminuez l’échelle pour réduire la taille du rendu
+    }).then(canvas => {
+        const imgData = canvas.toDataURL("image/png");
 
-html2canvas(captureElement, { scale: 1 }).then(canvas => {
-    const pdf = new jsPDF("p", "mm", "a4");
-    const pdfWidth = pdf.internal.pageSize.getWidth();
-    const pdfHeight = pdf.internal.pageSize.getHeight();
-    const imgData = canvas.toDataURL("image/png");
+        const pdfWidth = pdf.internal.pageSize.getWidth();
+        const pdfHeight = pdf.internal.pageSize.getHeight();
 
-    let imgHeight = (canvas.height * pdfWidth) / canvas.width;
-    let position = 0;
+        // Calculer la largeur et la hauteur en gardant les proportions
+        const imgWidth = pdfWidth;
+        const imgHeight = (canvas.height * pdfWidth) / canvas.width;
 
-    // Diviser le contenu en plusieurs pages si nécessaire
-    while (position < imgHeight) {
-        pdf.addImage(imgData, "PNG", 0, position, pdfWidth, imgHeight);
+        // Ajouter l'image du contenu principal à la page
+        pdf.addImage(imgData, 'PNG', 0, 0, imgWidth, imgHeight);
 
-        // Si le contenu dépasse la hauteur de la page, créez une nouvelle page
-        if (position + pdfHeight < imgHeight) {
-            pdf.addPage();
-        }
+        // Calculer la position du footer
+        const footerY = imgHeight < pdfHeight ? pdfHeight - 40 : imgHeight + 10; // 40mm pour l'espace du footer
 
-        position += pdfHeight;
-    }
+        // Ajouter le footer à la position appropriée
+        pdf.setFontSize(8);
+        pdf.text("Direction Generale: Bamako-Mali- Hamdallaye ACI 2000 Immeuble ABK-6 B103", 10, footerY);
+        pdf.text("Tél: +223 76 02 34 71 6 66 02 34 71 - 61 96 17 94", 10, footerY + 5);
+        pdf.text("www.sankoreservices.com - sankoreservices@yahoo.fr", 10, footerY + 10);
+        pdf.text("Bureau de Mopti-Sévaré: Socoura en face de l'IFP de Sévaré", 10, footerY + 15);
+        pdf.text("Bureau de Gao: Aldjanabandia-4ème Quartier à coté de la Mare - Tél: 76 18 43 97", 10, footerY + 20);
 
-    pdf.save("document.pdf");
-});
-
+        // Sauvegarder le PDF
+        pdf.save("document.pdf");
+    });
 }
-
 
 
 
