@@ -313,7 +313,7 @@ function makePDF() {
 
         // Paramètres pour le footer
         pdf.setFontSize(10);
-        let yPosition = pdfHeight - 40;
+        let yPosition = pdfHeight - 42; // Décalage de 2 pixels vers le haut (pdfHeight - 40 - 2)
 
         // Dimensions du footer
         const footerHeight = 45; // Hauteur totale du footer
@@ -322,7 +322,7 @@ function makePDF() {
         // Dessiner la bordure autour du footer
         pdf.setDrawColor(0, 0, 255);
         pdf.setLineWidth(0.5);
-        pdf.rect(footerMargin, pdfHeight - footerHeight, pdfWidth - 2 * footerMargin, footerHeight, "S");
+        pdf.rect(footerMargin, pdfHeight - footerHeight - 2, pdfWidth - 2 * footerMargin, footerHeight, "S"); // Décalage de 2 pixels vers le haut
 
         // Ajout de chaque ligne du footer, centré
         footerContent.forEach(line => {
