@@ -255,17 +255,35 @@ window.html2canvas = html2canvas;
 
     // Fonction makePDF pour capturer et sauvegarder en PDF
     function makePDF() {
-        html2canvas(document.querySelector("#capture"), {
-            allowTaint: true,
-            useCORS: true,
-            scale: 1
-        }).then(canvas => {
-            const img = canvas.toDataURL("image/png");
-            const doc = new jsPDF();
-            doc.addImage(img, 'PNG', 10, 10, 190, 0);
-            doc.save("plomberie.pdf");
+    const container = document.querySelector(".container");
+    
+    // Calcul des dimensions de l'élément "container"
+    const containerWidth = container.offsetWidth;
+    const containerHeight = container.offsetHeight;
+    
+    // Création du canvas et capture de l'élément avec html2canvas
+    html2canvas(container, {
+        allowTaint: true,
+        useCORS: true,
+        scale: 2  // Augmente la résolution pour une meilleure qualité d'image
+    }).then(canvas => {
+        const imgData = canvas.toDataURL("image/png");
+        
+        // Instanciation du PDF avec les mêmes dimensions que l'élément container
+        const pdf = new jsPDF({
+            orientation: containerWidth > containerHeight ? 'landscape' : 'portrait',
+            unit: 'px',
+            format: [containerWidth, containerHeight]
         });
-    }
+        
+        // Ajout de l'image dans le PDF pour remplir toute la page
+        pdf.addImage(imgData, 'PNG', 0, 0, containerWidth, containerHeight);
+        
+        // Enregistrement du PDF
+        pdf.save("plomberie.pdf");
+    });
+}
+
 
     // Affichage des détails de commande, avec vérification
     function displayCommandDetails() {
