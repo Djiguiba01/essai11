@@ -288,8 +288,7 @@ window.html2canvas = html2canvas;
 
     // Fonction makePDF pour capturer et sauvegarder en PDF
    // Fonction makePDF pour capturer et sauvegarder en PDF
-// Fonction makePDF pour capturer et sauvegarder en PDF
-function makePDF() {
+   function makePDF() {
     const pdf = new jsPDF("p", "mm", "a4");
     const container = document.querySelector(".container");
 
@@ -331,7 +330,7 @@ function makePDF() {
         // Contenu du footer (sans image)
         const footerContent = [
             { text: "Direction Generale:", color: [255, 0, 0], xPosition: 35 }, // "Direction Generale" en rouge
-            { text: " Bamako-Mali- Hamdallaye ACI 2000 Immeuble ABK-6 B103", color: [0, 0, 0], xPosition: 15 + 50 }, // Le reste en bleu
+            { text: " Bamako-Mali- Hamdallaye ACI 2000 Immeuble ABK-6 B103", color: [0, 0, 0], xPosition: 35 }, // Le reste en bleu
             { text: "Tél: +223 76 02 34 71 6 66 02 34 71 - 61 96 17 94 - 20 74 04 48 / E-mail: ", color: [0, 0, 0] },
             { text: "sankoreservices@gmail.com - www.sankoreservices.com - sankoreservices@yahoo.fr", color: [0, 0, 255] },
             { text: "Bureau de Mopti-Sévaré:", color: [255, 0, 0], xPosition: 35 },
@@ -367,8 +366,8 @@ function makePDF() {
         // Ajouter chaque ligne restante du footer, centrée
         footerContent.slice(2).forEach(line => {
             pdf.setTextColor(...line.color);
-            const textWidth = pdf.getTextWidth(line.text);
-            const centeredX = (pdfWidth - textWidth) / 2;
+            const textWidth = pdf.getTextWidth(line.text); // Calcul de la largeur du texte
+            const centeredX = (pdfWidth - textWidth) / 2; // Calcul pour centrer le texte
             pdf.text(line.text, centeredX, yPosition + 5); // Espace entre les lignes
             yPosition += 5; // Espace entre les lignes
         });
