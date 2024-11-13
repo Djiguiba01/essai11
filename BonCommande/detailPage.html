@@ -364,14 +364,12 @@ function makePDF() {
         pdf.setTextColor(0, 0, 255); // Bleu pour le reste
         pdf.text(footerContent[1].text, footerContent[1].xPosition, yPosition); // Le reste du texte après "Direction Generale:"
 
-        // Ajouter chaque ligne restante du footer, avec la même logique pour xPosition
+        // Ajouter chaque ligne restante du footer, centrée
         footerContent.slice(2).forEach(line => {
             pdf.setTextColor(...line.color);
-
-            // Appliquer xPosition pour chaque ligne, sinon centrer comme avant
-            const xPosition = line.xPosition || (pdfWidth - pdf.getTextWidth(line.text)) / 2;
-
-            pdf.text(line.text, xPosition, yPosition + 5); // Espace entre les lignes
+            const textWidth = pdf.getTextWidth(line.text);
+            const centeredX = (pdfWidth - textWidth) / 2;
+            pdf.text(line.text, centeredX, yPosition + 5); // Espace entre les lignes
             yPosition += 5; // Espace entre les lignes
         });
 
