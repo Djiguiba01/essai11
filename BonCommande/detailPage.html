@@ -288,7 +288,8 @@ window.html2canvas = html2canvas;
 
     // Fonction makePDF pour capturer et sauvegarder en PDF
    // Fonction makePDF pour capturer et sauvegarder en PDF
-   function makePDF() {
+// Fonction makePDF pour capturer et sauvegarder en PDF
+function makePDF() {
     const pdf = new jsPDF("p", "mm", "a4");
     const container = document.querySelector(".container");
 
@@ -314,30 +315,64 @@ window.html2canvas = html2canvas;
         // Calcul de la position pour le texte "accordrecept"
         const accordeReceptPositionY = imgHeight + 10; // Position 30 pixels sous le tableau
 
-        // Texte de la section "accordrecept"
+        // Texte de la section "accordrecept" à ajouter avant le footer
         const accordeReceptContent = {
-            left: "Pour Réception",
+            left: "Pour Récéption",
             right: "Le Fournisseur"
         };
 
         pdf.setFontSize(12);
         pdf.setTextColor(0, 0, 0);
+        
+        // Position de la section accordeRecept, 47 pixels au-dessus du footer (environ 77 pixels au-dessus de la fin de la page)
+        let accordeReceptYPosition = pdfHeight - 87; // Ajusté pour une position plus haute
 
-        // Alignement de "Pour Réception" à gauche et "Le Fournisseur" à droite
-        const leftTextX = 15;
-        const rightTextX = pdfWidth - 45;
+        // Alignement à gauche et à droite
+        pdf.text(accordeReceptContent.left, 15, accordeReceptYPosition); // Gauche
+        pdf.text(accordeReceptContent.right, pdfWidth - 45, accordeReceptYPosition); // Droite
 
-        pdf.text(accordeReceptContent.left, leftTextX, accordeReceptPositionY); // Gauche
-        pdf.text(accordeReceptContent.right, rightTextX, accordeReceptPositionY); // Droite
+        // Contenu du footer avec partie colorée en rouge
+        const footerContent = [
+            { prefix: "Direction Generale: ", text: "Bamako-Mali- Hamdallaye ACI 2000 Immeuble ABK-6 B103", prefixColor: [255, 0, 0], textColor: [0, 0, 0] },
+            { prefix: "Tél: ", text: "+223 76 02 34 71 6 66 02 34 71 - 61 96 17 94 - 20 74 04 48 / E-mail:", prefixColor: [0, 0, 0], textColor: [0, 0, 0] },
+            { prefix: " sankoreservices@gmail.com - www.sankoreservices.com - ", text: "sankoreservices@yahoo.fr", prefixColor: [0, 0, 255], textColor: [0, 0, 255] },
+            { prefix: "Bureau de Mopti-Sévaré: ", text: "Socoura en face de l'IFP de Sévaré", prefixColor: [255, 0, 0], textColor: [0, 0, 255] },
+            { prefix: "Tél: ", text: "+223 91 00 00 47 - 91 00 00 48 - 20 29 17 14 - 21 42 19 17", prefixColor: [0, 0, 255], textColor: [0, 0, 255] },
+            { prefix: "Bureau de Tombouctou: ", text: "Sareikeina Albamé-Derrière la Mairie de Tbt-tel: 66 69 55 92", prefixColor: [15, 146, 85], textColor: [0, 0, 0] },
+            { prefix: "Bureau de Gao: ", text: "Aldjanabandia-4ème Quartier à coté de la Mare - Tél: 76 18 43 97", prefixColor: [255, 0, 0], textColor: [0, 0, 0] },
+            { prefix: "NINA: ", text: "42009194223006T - RCCM: MA.BKO. 2020.B B5. DU 03/01/2020 - NIF: 082247104J", prefixColor: [0, 0, 139], textColor: [0, 0, 0] }
+        ];
 
-        // Souligner les textes en dessinant une ligne sous chaque texte
-        const underlineY = accordeReceptPositionY + 1.5; // Position de la ligne légèrement en dessous du texte
+        // Paramètres pour le footer
+        pdf.setFontSize(10);
+        let yPosition = pdfHeight - 42; // Position de départ du footer
+
+        // Dimensions du footer
+        const footerHeight = 45; // Hauteur totale du footer
+        const footerMargin = 10; // Marge horizontale de chaque côté
+
+        // Dessiner la bordure autour du footer
+        pdf.setDrawColor(0, 0, 255);
         pdf.setLineWidth(0.5);
-        pdf.line(leftTextX, underlineY, leftTextX + pdf.getTextWidth(accordeReceptContent.left), underlineY); // Ligne pour "Pour Réception"
-        pdf.line(rightTextX, underlineY, rightTextX + pdf.getTextWidth(accordeReceptContent.right), underlineY); // Ligne pour "Le Fournisseur"
+        pdf.rect(footerMargin, pdfHeight - footerHeight - 2, pdfWidth - 2 * footerMargin, footerHeight, "S"); // Décalage de 2 pixels vers le haut
 
-        // Contenu du footer et autres éléments
-        // ... (votre code du footer reste inchangé)
+        // Ajout de chaque ligne du footer avec des couleurs différentes pour chaque segment
+        footerContent.forEach(line => {
+            const prefixWidth = pdf.getTextWidth(line.prefix);
+            const textWidth = pdf.getTextWidth(line.text);
+            const totalWidth = prefixWidth + textWidth;
+
+            // Calculer la position centrée
+            const centeredX = (pdfWidth - totalWidth) / 2;
+
+            pdf.setTextColor(...line.prefixColor);
+            pdf.text(line.prefix, centeredX, yPosition);
+
+            pdf.setTextColor(...line.textColor);
+            pdf.text(line.text, centeredX + prefixWidth, yPosition);
+
+            yPosition += 5; // Espace entre les lignes
+        });
 
         // Enregistrer le PDF
         pdf.save("document.pdf");
