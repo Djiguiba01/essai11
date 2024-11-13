@@ -328,20 +328,16 @@ function makePDF() {
         pdf.text(accordeReceptContent.left, 15, accordeReceptYPosition); // Gauche
         pdf.text(accordeReceptContent.right, pdfWidth - 45, accordeReceptYPosition); // Droite
 
-        // Contenu du footer (sans image)
+        // Contenu du footer avec partie colorée en rouge
         const footerContent = [
-            { text: "Direction Generale:", color: [255, 0, 0], xPosition: 35 }, // "Direction Generale" en rouge
-            { text: " Bamako-Mali- Hamdallaye ACI 2000 Immeuble ABK-6 B103", color: [0, 0, 0], xPosition: 15 + 50 }, // Le reste en bleu
-            { text: "Tél: +223 76 02 34 71 6 66 02 34 71 - 61 96 17 94 - 20 74 04 48 / E-mail: ", color: [0, 0, 0] },
-            { text: "sankoreservices@gmail.com - www.sankoreservices.com - sankoreservices@yahoo.fr", color: [0, 0, 255] },
-            { text: "Bureau de Mopti-Sévaré:", color: [255, 0, 0], xPosition: 35 },
-            { text: " Socoura en face de l'IFP de Sévaré", color: [0, 0, 255] },
-            { text: "Tél: +223 91 00 00 47 - 91 00 00 48 - 20 29 17 14 - 21 42 19 17", color: [0, 0, 255] },
-            { text: "Bureau de Tombouctou:", color: [15, 146, 85], xPosition: 35 }, 
-            { text: "Sareikeina Albamé-Derrière la Mairie de Tbt-tel: 66 69 55 92", color: [0, 0, 0] },
-            { text: "Bureau de Gao:", color: [255, 0, 0], xPosition: 35 }, 
-            { text: "Aldjanabandia-4ème Quartier à coté de la Mare - Tél: 76 18 43 97", color: [15, 146, 85] },
-            { text: "NINA: 42009194223006T - RCCM: MA.BKO. 2020.B B5. DU 03/01/2020 - NIF: 082247104J", color: [0, 0, 0] }
+            { prefix: "Direction Generale: ", text: "Bamako-Mali- Hamdallaye ACI 2000 Immeuble ABK-6 B103", prefixColor: [255, 0, 0], textColor: [0, 0, 255] },
+            { prefix: "Tél: ", text: "+223 76 02 34 71 6 66 02 34 71 - 61 96 17 94 - 20 74 04 48 / E-mail: sankoreservices@gmail.com", prefixColor: [0, 0, 255], textColor: [0, 0, 255] },
+            { prefix: "www.sankoreservices.com - ", text: "sankoreservices@yahoo.fr", prefixColor: [0, 0, 255], textColor: [0, 0, 255] },
+            { prefix: "Bureau de Mopti-Sévaré: ", text: "Socoura en face de l'IFP de Sévaré", prefixColor: [255, 0, 0], textColor: [0, 0, 255] },
+            { prefix: "Tél: ", text: "+223 91 00 00 47 - 91 00 00 48 - 20 29 17 14 - 21 42 19 17", prefixColor: [0, 0, 255], textColor: [0, 0, 255] },
+            { prefix: "Bureau de Tombouctou: ", text: "Sareikeina Albamé-Derrière la Mairie de Tbt-tel: 66 69 55 92", prefixColor: [255, 0, 0], textColor: [0, 0, 255] },
+            { prefix: "Bureau de Gao: ", text: "Aldjanabandia-4ème Quartier à coté de la Mare - Tél: 76 18 43 97", prefixColor: [255, 0, 0], textColor: [15, 146, 85] },
+            { prefix: "NINA: ", text: "42009194223006T - RCCM: MA.BKO. 2020.B B5. DU 03/01/2020 - NIF: 082247104J", prefixColor: [0, 0, 139], textColor: [0, 0, 139] }
         ];
 
         // Paramètres pour le footer
@@ -357,19 +353,16 @@ function makePDF() {
         pdf.setLineWidth(0.5);
         pdf.rect(footerMargin, pdfHeight - footerHeight - 2, pdfWidth - 2 * footerMargin, footerHeight, "S"); // Décalage de 2 pixels vers le haut
 
-        // Ajouter "Direction Generale:" en rouge puis le reste en bleu sur la même ligne
-        pdf.setTextColor(255, 0, 0); // Rouge pour "Direction Generale:"
-        pdf.text(footerContent[0].text, footerContent[0].xPosition, yPosition); // "Direction Generale:"
-        
-        pdf.setTextColor(0, 0, 255); // Bleu pour le reste
-        pdf.text(footerContent[1].text, footerContent[1].xPosition, yPosition); // Le reste du texte après "Direction Generale:"
+        // Ajout de chaque ligne du footer avec des couleurs différentes pour chaque segment
+        footerContent.forEach(line => {
+            // Afficher le texte en deux parties (prefixe et texte)
+            pdf.setTextColor(...line.prefixColor);
+            const prefixWidth = pdf.getTextWidth(line.prefix);
+            pdf.text(line.prefix, footerMargin, yPosition);
 
-        // Ajouter chaque ligne restante du footer, centrée
-        footerContent.slice(2).forEach(line => {
-            pdf.setTextColor(...line.color);
-            const textWidth = pdf.getTextWidth(line.text);
-            const centeredX = (pdfWidth - textWidth) / 2;
-            pdf.text(line.text, centeredX, yPosition + 5); // Espace entre les lignes
+            pdf.setTextColor(...line.textColor);
+            pdf.text(line.text, footerMargin + prefixWidth + 2, yPosition); // Décalage du texte suivant le prefix
+
             yPosition += 5; // Espace entre les lignes
         });
 
