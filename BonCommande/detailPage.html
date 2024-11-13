@@ -355,13 +355,21 @@ function makePDF() {
 
         // Ajout de chaque ligne du footer avec des couleurs différentes pour chaque segment
         footerContent.forEach(line => {
-            // Afficher le texte en deux parties (prefixe et texte)
-            pdf.setTextColor(...line.prefixColor);
+            // Calculer la largeur du texte complet pour centrer le contenu
             const prefixWidth = pdf.getTextWidth(line.prefix);
-            pdf.text(line.prefix, footerMargin, yPosition);
+            const textWidth = pdf.getTextWidth(line.text);
+            const totalWidth = prefixWidth + textWidth;
 
+            // Calculer la position horizontale centrée
+            const centeredX = (pdfWidth - totalWidth) / 2;
+
+            // Afficher la partie colorée en rouge (prefix)
+            pdf.setTextColor(...line.prefixColor);
+            pdf.text(line.prefix, centeredX, yPosition);
+
+            // Afficher le texte restant
             pdf.setTextColor(...line.textColor);
-            pdf.text(line.text, footerMargin + prefixWidth + 2, yPosition); // Décalage du texte suivant le prefix
+            pdf.text(line.text, centeredX + prefixWidth, yPosition); // Décalage après le préfixe
 
             yPosition += 5; // Espace entre les lignes
         });
