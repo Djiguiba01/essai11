@@ -347,6 +347,10 @@ button[type="submit"]:hover {
     z-index: 500;
 }
 
+#numBonCommandDetail{
+    font-weight: bold;
+    color: red;
+}
 /* ::::::::::::::::::: */
 
 .footer-info {

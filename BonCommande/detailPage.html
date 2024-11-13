@@ -24,9 +24,9 @@
                 <img src="../images/logo1.png" alt="GROUPE SANKORE Logo">
             </div>
             <div class="header-text">
-                <p style="color: red;">Infrastructure - Développement</p>
-                <p style="text-align: center;">BTP - Agrobusiness</p>
-                <p style="color: red;">Informatique - Développement</p>
+                <p style="color: red;">Infrastructures - Développement</p>
+                <p style="text-align: center;">BTP - Agriculture</p>
+                <p style="color: red;">Informatique - Commerce Général</p>
                 <p style="text-align: center;">Mobilier - Immobilier</p>
             </div>
         </header>
@@ -167,7 +167,9 @@ function displayCommandDetails() {
     const commandIndex = parseInt(commandId, 10);
     if (!isNaN(commandIndex) && existingCommands[commandIndex]) {
         const command = existingCommands[commandIndex];
-        document.getElementById("dateCommandDetail").innerText = `Date: ${command.dateCommand || "Non disponible"}`;
+        // document.getElementById("dateCommandDetail").innerText = `Date: ${command.dateCommand || "Non disponible"}`;
+        document.getElementById("dateCommandDetail").innerHTML = `<span style="color: red;">Doit à:</span> ${command.dateCommand || "Non disponible"}`;
+
         document.getElementById("numBonCommandDetail").innerText = `Numéro de bon: ${command.numBonCommand || "Non disponible"}`;
         document.getElementById("doitCommandDetail").innerText = `Doit: ${command.doitCommand || "Non disponible"}`;
         document.getElementById("addresCommandDetail").innerText = `Adresse: ${command.addresCommand || "Non disponible"}`;
@@ -285,7 +287,6 @@ window.html2canvas = html2canvas;
     window.jsPDF = window.jspdf.jsPDF;
 
     // Fonction makePDF pour capturer et sauvegarder en PDF
-    // Fonction makePDF pour capturer et sauvegarder en PDF
     function makePDF() {
     const pdf = new jsPDF("p", "mm", "a4");
     const container = document.querySelector(".container");
@@ -311,8 +312,8 @@ window.html2canvas = html2canvas;
 
         // Texte de la section "accordrecept" à ajouter avant le footer
         const accordeReceptContent = {
-            left: "POUR Récéption",
-            right: "LE Fournisseur"
+            left: "Pour Récéption",
+            right: "Le Fournisseur"
         };
 
         pdf.setFontSize(12);
@@ -373,10 +374,10 @@ window.html2canvas = html2canvas;
 
         if (!isNaN(commandIndex) && existingCommands[commandIndex]) {
             const command = existingCommands[commandIndex];
-            document.getElementById("dateCommandDetail").innerText = `Date: ${command.dateCommand || "Non disponible"}`;
-            document.getElementById("numBonCommandDetail").innerText = `Numéro de bon: ${command.numBonCommand || "Non disponible"}`;
-            document.getElementById("doitCommandDetail").innerText = `Doit: ${command.doitCommand || "Non disponible"}`;
-            document.getElementById("addresCommandDetail").innerText = `Adresse: ${command.addresCommand || "Non disponible"}`;
+            document.getElementById("dateCommandDetail").innerText = `DATE: ${command.dateCommand || "Non disponible"}`;
+            document.getElementById("numBonCommandDetail").innerText = `BON DE LIVRAISON: ${command.numBonCommand || "Non disponible"}`;
+            document.getElementById("doitCommandDetail").innerText = `Doit à: ${command.doitCommand || "Non disponible"}`;
+            document.getElementById("addresCommandDetail").innerText = ` ${command.addresCommand || "Non disponible"}`;
 
             const temporaryCommandsDetail = document.getElementById("temporaryCommandsDetail");
             temporaryCommandsDetail.innerHTML = "";
