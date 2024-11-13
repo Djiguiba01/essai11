@@ -58,14 +58,14 @@
             </table>
         </section>
 
-        <div class="accordrecept" style="display: flex;justify-content: space-between;">
+        <!-- <div class="accordrecept" style="display: flex;justify-content: space-between;">
             <div class="daucheacord">
                 POUR Récéption
             </div>
             <div class="droitaccord">
                 LE Fournisseur
             </div>
-        </div>
+        </div> -->
         <!-- :::::::::::::::::::::::::::::::::::::: -->
         <!-- <footer>
             <p style="color: blue;"><strong style="color: red;">Direction Generale: </strong> Bamako-Mali- Hamdallaye ACI 2000 Immeuble ABK-6 B103</p>
@@ -311,8 +311,8 @@ window.html2canvas = html2canvas;
 
         // Texte de la section "accordrecept" à ajouter avant le footer
         const accordeReceptContent = {
-            left: "POUR Récéption",
-            right: "LE Fournisseur"
+            left: "Pour Récéption",
+            right: "Le Fournisseur"
         };
 
         pdf.setFontSize(12);
@@ -339,7 +339,7 @@ window.html2canvas = html2canvas;
 
         // Paramètres pour le footer
         pdf.setFontSize(10);
-        let yPosition = pdfHeight - 42; // Décalage de 2 pixels vers le haut (pdfHeight - 40 - 2)
+        let yPosition = pdfHeight - 63; // Décalage de 2 pixels vers le haut (pdfHeight - 40 - 2)
 
         // Dimensions du footer
         const footerHeight = 45; // Hauteur totale du footer
