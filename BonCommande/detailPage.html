@@ -282,13 +282,9 @@ function deleteRow() {
 // ::::::TELECHARGEMENT1::::::::::::::::
 // :::::::PDF TELECHARGEMENT/////////
 
-// Initialisation des dépendances pour html2canvas et jsPDF
-window.html2canvas = html2canvas;
-window.jsPDF = window.jspdf.jsPDF;
-
 // Fonction makePDF pour capturer et sauvegarder en PDF
 function makePDF() {
-    const pdf = new jsPDF("p", "mm", "a4");
+    const pdf = new jsPDF("p", "mm", "a4"); // Orientation portrait, taille A4
     const container = document.querySelector(".container");
 
     // Ajout de la classe pour appliquer le style PDF
@@ -303,26 +299,26 @@ function makePDF() {
         // Récupération de l'image du contenu sous forme de donnée URL
         const imgData = canvas.toDataURL("image/png");
 
-        // Dimensions de la page PDF (A4)
-        const pdfWidth = pdf.internal.pageSize.getWidth(); // Largeur de la page PDF
-        const pdfHeight = pdf.internal.pageSize.getHeight(); // Hauteur de la page PDF
+        // Récupération des dimensions du PDF A4
+        const pdfWidth = pdf.internal.pageSize.getWidth(); // Largeur de la page A4
+        const pdfHeight = pdf.internal.pageSize.getHeight(); // Hauteur de la page A4
 
-        // Calcul de la taille de l'image pour qu'elle tienne sur la page A4
-        const imgWidth = pdfWidth;
-        const imgHeight = (canvas.height * pdfWidth) / canvas.width; // Calcul de la hauteur de l'image selon la largeur
+        // Dimensions de l'image capturée
+        const imgWidth = canvas.width;
+        const imgHeight = canvas.height;
 
-        // Si l'image est trop haute, ajuster sa taille pour tenir dans le PDF
-        if (imgHeight > pdfHeight) {
-            const scaleFactor = pdfHeight / imgHeight;
-            imgHeight = pdfHeight;
-            imgWidth = imgWidth * scaleFactor;
-        }
+        // Calcul du ratio de redimensionnement
+        const ratio = Math.min(pdfWidth / imgWidth, pdfHeight / imgHeight);
+
+        // Calcul des nouvelles dimensions de l'image
+        const newImgWidth = imgWidth * ratio;
+        const newImgHeight = imgHeight * ratio;
 
         // Ajout de l'image du contenu principal dans le PDF
-        pdf.addImage(imgData, 'PNG', 0, 0, imgWidth, imgHeight);
+        pdf.addImage(imgData, 'PNG', 0, 0, newImgWidth, newImgHeight);
 
         // Calcul de la position pour le texte "accordeRecept", à 30px sous le tableau principal
-        const accordeReceptPositionY = imgHeight + 10;
+        const accordeReceptPositionY = newImgHeight + 10;
 
         // Contenu de la section "accordeRecept"
         const accordeReceptContent = {
