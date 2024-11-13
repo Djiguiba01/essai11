@@ -355,10 +355,22 @@ function makePDF() {
 
         // Ajout de chaque ligne du footer, centré
         footerContent.forEach(line => {
-            pdf.setTextColor(...line.color);
-            pdf.text(line.text, line.xPosition, yPosition); // Utilisation de la position x définie pour chaque partie du texte
+    // Vérification que la couleur et la position sont valides
+    if (line.text && Array.isArray(line.color) && line.color.length === 3) {
+        pdf.setTextColor(...line.color);
+
+        // Vérifier que la position x et y sont des nombres
+        if (typeof line.xPosition === 'number' && !isNaN(line.xPosition)) {
+            pdf.text(line.text, line.xPosition, yPosition); 
             yPosition += 5; // Espace entre les lignes
-        });
+        } else {
+            console.error("Position x invalide pour le texte : ", line.text);
+        }
+    } else {
+        console.error("Données invalides pour le footer, texte ou couleur manquants : ", line);
+    }
+});
+
 
         // Enregistrer le PDF
         pdf.save("document.pdf");
