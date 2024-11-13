@@ -289,6 +289,7 @@ window.html2canvas = html2canvas;
     // Fonction makePDF pour capturer et sauvegarder en PDF
    // Fonction makePDF pour capturer et sauvegarder en PDF
 // Fonction makePDF pour capturer et sauvegarder en PDF
+// Fonction makePDF pour capturer et sauvegarder en PDF
 function makePDF() {
     const pdf = new jsPDF("p", "mm", "a4");
     const container = document.querySelector(".container");
@@ -312,7 +313,10 @@ function makePDF() {
         // Ajouter l'image du contenu principal au PDF
         pdf.addImage(imgData, 'PNG', 0, 0, imgWidth, imgHeight);
 
-        // Texte de la section "accordrecept" à ajouter avant le footer
+        // Calcul de la position pour le texte "accordrecept"
+        const accordeReceptPositionY = imgHeight + 30; // Position 30 pixels sous le tableau
+
+        // Texte de la section "accordrecept"
         const accordeReceptContent = {
             left: "Pour Récéption",
             right: "Le Fournisseur"
@@ -320,29 +324,26 @@ function makePDF() {
 
         pdf.setFontSize(12);
         pdf.setTextColor(0, 0, 0);
-        
-        // Position de la section accordeRecept, 47 pixels au-dessus du footer (environ 77 pixels au-dessus de la fin de la page)
-        let accordeReceptYPosition = pdfHeight - 87; // Ajusté pour une position plus haute
 
-        // Alignement à gauche et à droite
-        pdf.text(accordeReceptContent.left, 15, accordeReceptYPosition); // Gauche
-        pdf.text(accordeReceptContent.right, pdfWidth - 45, accordeReceptYPosition); // Droite
+        // Alignement de "Pour Récéption" à gauche et "Le Fournisseur" à droite
+        pdf.text(accordeReceptContent.left, 15, accordeReceptPositionY); // Gauche
+        pdf.text(accordeReceptContent.right, pdfWidth - 45, accordeReceptPositionY); // Droite
 
         // Contenu du footer avec partie colorée en rouge
         const footerContent = [
-            { prefix: "Direction Generale: ", text: "Bamako-Mali- Hamdallaye ACI 2000 Immeuble ABK-6 B103", prefixColor: [255, 0, 0], textColor: [0, 0, 0] },
-            { prefix: "Tél: ", text: "+223 76 02 34 71 6 66 02 34 71 - 61 96 17 94 - 20 74 04 48 / E-mail:", prefixColor: [0, 0, 0], textColor: [0, 0, 0] },
-            { prefix: " sankoreservices@gmail.com - www.sankoreservices.com - ", text: "sankoreservices@yahoo.fr", prefixColor: [0, 0, 255], textColor: [0, 0, 255] },
+            { prefix: "Direction Generale: ", text: "Bamako-Mali- Hamdallaye ACI 2000 Immeuble ABK-6 B103", prefixColor: [255, 0, 0], textColor: [0, 0, 255] },
+            { prefix: "Tél: ", text: "+223 76 02 34 71 6 66 02 34 71 - 61 96 17 94 - 20 74 04 48 / E-mail: sankoreservices@gmail.com", prefixColor: [0, 0, 255], textColor: [0, 0, 255] },
+            { prefix: "www.sankoreservices.com - ", text: "sankoreservices@yahoo.fr", prefixColor: [0, 0, 255], textColor: [0, 0, 255] },
             { prefix: "Bureau de Mopti-Sévaré: ", text: "Socoura en face de l'IFP de Sévaré", prefixColor: [255, 0, 0], textColor: [0, 0, 255] },
             { prefix: "Tél: ", text: "+223 91 00 00 47 - 91 00 00 48 - 20 29 17 14 - 21 42 19 17", prefixColor: [0, 0, 255], textColor: [0, 0, 255] },
-            { prefix: "Bureau de Tombouctou: ", text: "Sareikeina Albamé-Derrière la Mairie de Tbt-tel: 66 69 55 92", prefixColor: [15, 146, 85], textColor: [0, 0, 0] },
-            { prefix: "Bureau de Gao: ", text: "Aldjanabandia-4ème Quartier à coté de la Mare - Tél: 76 18 43 97", prefixColor: [255, 0, 0], textColor: [0, 0, 0] },
-            { prefix: "NINA: ", text: "42009194223006T - RCCM: MA.BKO. 2020.B B5. DU 03/01/2020 - NIF: 082247104J", prefixColor: [0, 0, 139], textColor: [0, 0, 0] }
+            { prefix: "Bureau de Tombouctou: ", text: "Sareikeina Albamé-Derrière la Mairie de Tbt-tel: 66 69 55 92", prefixColor: [255, 0, 0], textColor: [0, 0, 255] },
+            { prefix: "Bureau de Gao: ", text: "Aldjanabandia-4ème Quartier à coté de la Mare - Tél: 76 18 43 97", prefixColor: [255, 0, 0], textColor: [15, 146, 85] },
+            { prefix: "NINA: ", text: "42009194223006T - RCCM: MA.BKO. 2020.B B5. DU 03/01/2020 - NIF: 082247104J", prefixColor: [0, 0, 139], textColor: [0, 0, 139] }
         ];
 
         // Paramètres pour le footer
         pdf.setFontSize(10);
-        let yPosition = pdfHeight - 42; // Décalage de 2 pixels vers le haut (pdfHeight - 40 - 2)
+        let yPosition = pdfHeight - 42; // Position de départ du footer
 
         // Dimensions du footer
         const footerHeight = 45; // Hauteur totale du footer
@@ -355,21 +356,18 @@ function makePDF() {
 
         // Ajout de chaque ligne du footer avec des couleurs différentes pour chaque segment
         footerContent.forEach(line => {
-            // Calculer la largeur du texte complet pour centrer le contenu
             const prefixWidth = pdf.getTextWidth(line.prefix);
             const textWidth = pdf.getTextWidth(line.text);
             const totalWidth = prefixWidth + textWidth;
 
-            // Calculer la position horizontale centrée
+            // Calculer la position centrée
             const centeredX = (pdfWidth - totalWidth) / 2;
 
-            // Afficher la partie colorée en rouge (prefix)
             pdf.setTextColor(...line.prefixColor);
             pdf.text(line.prefix, centeredX, yPosition);
 
-            // Afficher le texte restant
             pdf.setTextColor(...line.textColor);
-            pdf.text(line.text, centeredX + prefixWidth, yPosition); // Décalage après le préfixe
+            pdf.text(line.text, centeredX + prefixWidth, yPosition);
 
             yPosition += 5; // Espace entre les lignes
         });
@@ -392,7 +390,7 @@ function makePDF() {
             document.getElementById("dateCommandDetail").innerText = `DATE: ${command.dateCommand || "Non disponible"}`;
             document.getElementById("numBonCommandDetail").innerText = `BON DE LIVRAISON: ${command.numBonCommand || "Non disponible"}`;
             document.getElementById("doitCommandDetail").innerText = `Doit à: ${command.doitCommand || "Non disponible"}`;
-            document.getElementById("addresCommandDetail").innerText = ` ${command.addresCommand || "Non disponible"}`;
+            document.getElementById("addresCommandDetail").innerText = ` ${command.addresCommand || " "}`;
 
             const temporaryCommandsDetail = document.getElementById("temporaryCommandsDetail");
             temporaryCommandsDetail.innerHTML = "";
