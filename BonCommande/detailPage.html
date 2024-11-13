@@ -331,17 +331,17 @@ function makePDF() {
         // Contenu du footer (sans image)
         const footerContent = [
             { text: "Direction Generale:", color: [255, 0, 0], xPosition: 35 }, // "Direction Generale" en rouge
-            { text: " Bamako-Mali- Hamdallaye ACI 2000 Immeuble ABK-6 B103", color: [0, 0, 0], xPosition: 85 }, // Le reste en bleu
-            { text: "Tél: +223 76 02 34 71 6 66 02 34 71 - 61 96 17 94 - 20 74 04 48 / E-mail: ", color: [0, 0, 0], xPosition: 35 },
-            { text: "sankoreservices@gmail.com - www.sankoreservices.com - sankoreservices@yahoo.fr", color: [0, 0, 255], xPosition: 35 },
+            { text: " Bamako-Mali- Hamdallaye ACI 2000 Immeuble ABK-6 B103", color: [0, 0, 0], xPosition: 15 + 50 }, // Le reste en bleu
+            { text: "Tél: +223 76 02 34 71 6 66 02 34 71 - 61 96 17 94 - 20 74 04 48 / E-mail: ", color: [0, 0, 0] },
+            { text: "sankoreservices@gmail.com - www.sankoreservices.com - sankoreservices@yahoo.fr", color: [0, 0, 255] },
             { text: "Bureau de Mopti-Sévaré:", color: [255, 0, 0], xPosition: 35 },
-            { text: " Socoura en face de l'IFP de Sévaré", color: [0, 0, 255], xPosition: 35 },
-            { text: "Tél: +223 91 00 00 47 - 91 00 00 48 - 20 29 17 14 - 21 42 19 17", color: [0, 0, 255], xPosition: 35 },
+            { text: " Socoura en face de l'IFP de Sévaré", color: [0, 0, 255] },
+            { text: "Tél: +223 91 00 00 47 - 91 00 00 48 - 20 29 17 14 - 21 42 19 17", color: [0, 0, 255] },
             { text: "Bureau de Tombouctou:", color: [15, 146, 85], xPosition: 35 }, 
-            { text: "Sareikeina Albamé-Derrière la Mairie de Tbt-tel: 66 69 55 92", color: [0, 0, 0], xPosition: 35 },
+            { text: "Sareikeina Albamé-Derrière la Mairie de Tbt-tel: 66 69 55 92", color: [0, 0, 0] },
             { text: "Bureau de Gao:", color: [255, 0, 0], xPosition: 35 }, 
-            { text: "Aldjanabandia-4ème Quartier à coté de la Mare - Tél: 76 18 43 97", color: [15, 146, 85], xPosition: 35 },
-            { text: "NINA: 42009194223006T - RCCM: MA.BKO. 2020.B B5. DU 03/01/2020 - NIF: 082247104J", color: [0, 0, 0], xPosition: 35 }
+            { text: "Aldjanabandia-4ème Quartier à coté de la Mare - Tél: 76 18 43 97", color: [15, 146, 85] },
+            { text: "NINA: 42009194223006T - RCCM: MA.BKO. 2020.B B5. DU 03/01/2020 - NIF: 082247104J", color: [0, 0, 0] }
         ];
 
         // Paramètres pour le footer
@@ -357,12 +357,21 @@ function makePDF() {
         pdf.setLineWidth(0.5);
         pdf.rect(footerMargin, pdfHeight - footerHeight - 2, pdfWidth - 2 * footerMargin, footerHeight, "S"); // Décalage de 2 pixels vers le haut
 
-        // Ajouter chaque ligne du footer avec son xPosition
-        footerContent.forEach(line => {
-            pdf.setTextColor(...line.color); // Applique la couleur spécifique
-            const textWidth = pdf.getTextWidth(line.text); // Calcul de la largeur du texte
-            const xPosition = line.xPosition || (pdfWidth - textWidth) / 2; // Si xPosition est défini, on l'utilise, sinon on centre le texte
-            pdf.text(line.text, xPosition, yPosition); // Positionne le texte
+        // Ajouter "Direction Generale:" en rouge puis le reste en bleu sur la même ligne
+        pdf.setTextColor(255, 0, 0); // Rouge pour "Direction Generale:"
+        pdf.text(footerContent[0].text, footerContent[0].xPosition, yPosition); // "Direction Generale:"
+        
+        pdf.setTextColor(0, 0, 255); // Bleu pour le reste
+        pdf.text(footerContent[1].text, footerContent[1].xPosition, yPosition); // Le reste du texte après "Direction Generale:"
+
+        // Ajouter chaque ligne restante du footer, avec la même logique pour xPosition
+        footerContent.slice(2).forEach(line => {
+            pdf.setTextColor(...line.color);
+
+            // Appliquer xPosition pour chaque ligne, sinon centrer comme avant
+            const xPosition = line.xPosition || (pdfWidth - pdf.getTextWidth(line.text)) / 2;
+
+            pdf.text(line.text, xPosition, yPosition + 5); // Espace entre les lignes
             yPosition += 5; // Espace entre les lignes
         });
 
