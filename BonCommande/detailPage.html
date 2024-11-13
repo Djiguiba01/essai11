@@ -329,8 +329,8 @@ function makePDF() {
 
         // Contenu du footer (sans image)
         const footerContent = [
-            { text: "Direction Generale:", color: [255, 0, 0], xPosition: 15 }, // Partie "Direction Generale:" en rouge
-            { text: " Bamako-Mali- Hamdallaye ACI 2000 Immeuble ABK-6 B103", color: [0, 0, 255], xPosition: 55 }, // Le reste du texte en bleu
+            { text: "Direction Generale:", color: [255, 0, 0], xPosition: 15 }, // "Direction Generale" en rouge
+            { text: " Bamako-Mali- Hamdallaye ACI 2000 Immeuble ABK-6 B103", color: [0, 0, 255], xPosition: 15 + 50 }, // Le reste en bleu
             { text: "Tél: +223 76 02 34 71 6 66 02 34 71 - 61 96 17 94 - 20 74 04 48 / E-mail: sankoreservices@gmail.com", color: [0, 0, 255] },
             { text: "www.sankoreservices.com - sankoreservices@yahoo.fr", color: [0, 0, 255] },
             { text: "Bureau de Mopti-Sévaré: Socoura en face de l'IFP de Sévaré", color: [0, 0, 255] },
@@ -353,24 +353,21 @@ function makePDF() {
         pdf.setLineWidth(0.5);
         pdf.rect(footerMargin, pdfHeight - footerHeight - 2, pdfWidth - 2 * footerMargin, footerHeight, "S"); // Décalage de 2 pixels vers le haut
 
-        // Ajout de chaque ligne du footer, centré
-        footerContent.forEach(line => {
-    // Vérification que la couleur et la position sont valides
-    if (line.text && Array.isArray(line.color) && line.color.length === 3) {
-        pdf.setTextColor(...line.color);
+        // Ajouter "Direction Generale:" en rouge puis le reste en bleu sur la même ligne
+        pdf.setTextColor(255, 0, 0); // Rouge pour "Direction Generale:"
+        pdf.text(footerContent[0].text, footerContent[0].xPosition, yPosition); // "Direction Generale:"
+        
+        pdf.setTextColor(0, 0, 255); // Bleu pour le reste
+        pdf.text(footerContent[1].text, footerContent[1].xPosition, yPosition); // Le reste du texte après "Direction Generale:"
 
-        // Vérifier que la position x et y sont des nombres
-        if (typeof line.xPosition === 'number' && !isNaN(line.xPosition)) {
-            pdf.text(line.text, line.xPosition, yPosition); 
+        // Ajouter chaque ligne restante du footer, centrée
+        footerContent.slice(2).forEach(line => {
+            pdf.setTextColor(...line.color);
+            const textWidth = pdf.getTextWidth(line.text);
+            const centeredX = (pdfWidth - textWidth) / 2;
+            pdf.text(line.text, centeredX, yPosition + 5); // Espace entre les lignes
             yPosition += 5; // Espace entre les lignes
-        } else {
-            console.error("Position x invalide pour le texte : ", line.text);
-        }
-    } else {
-        console.error("Données invalides pour le footer, texte ou couleur manquants : ", line);
-    }
-});
-
+        });
 
         // Enregistrer le PDF
         pdf.save("document.pdf");
