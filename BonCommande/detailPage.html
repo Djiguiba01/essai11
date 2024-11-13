@@ -311,15 +311,15 @@ window.html2canvas = html2canvas;
 
         // Texte de la section "accordrecept" à ajouter avant le footer
         const accordeReceptContent = {
-            left: "Pour Récéption",
+            left: "POUR Récéption",
             right: "LE Fournisseur"
         };
 
         pdf.setFontSize(12);
         pdf.setTextColor(0, 0, 0);
         
-        // Position de la section accordeRecept, 77 pixels au-dessus du footer
-        let accordeReceptYPosition = pdfHeight - 122; // Ajusté pour être 47 pixels plus haut
+        // Position de la section accordeRecept, 47 pixels au-dessus du footer (environ 77 pixels au-dessus de la fin de la page)
+        let accordeReceptYPosition = pdfHeight - 87; // Ajusté pour une position plus haute
 
         // Alignement à gauche et à droite
         pdf.text(accordeReceptContent.left, 15, accordeReceptYPosition); // Gauche
