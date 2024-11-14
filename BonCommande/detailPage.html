@@ -44,13 +44,15 @@
            </div>
 
             <div class="lieulivrai" style="display: flex; padding-top: 3%;">
-                <div class="lieugaucheli">
+                <div id="lieugaucheli">
                     BC: TTTrara 44( èè) hhh 
                 </div>
                 <div class="lieudroiteli" style="padding-left: 40%; position: fixed; font-weight: bold;">
-                    <h4>Lieu: BANDIAGARA (DOUROU)</h4>
+                    <h4 id="lieudroiteli">Lieu: BANDIAGARA (DOUROU)</h4>
                 </div>
             </div>
+
+            
         </section>
         
         <section class="table-section">
@@ -174,38 +176,39 @@ const existingCommands = JSON.parse(localStorage.getItem("commands")) || [];
 
 // Afficher les détails de la commande sélectionnée
 // Afficher les détails de la commande sélectionnée
-function displayCommandDetails() {
-    const commandIndex = parseInt(commandId, 10);
-    if (!isNaN(commandIndex) && existingCommands[commandIndex]) {
-        const command = existingCommands[commandIndex];
-        // document.getElementById("dateCommandDetail").innerText = `Date: ${command.dateCommand || "Non disponible"}`;
-        document.getElementById("dateCommandDetail").innerHTML = `<span style="color: red;">Doit à:</span> ${command.dateCommand || "Non disponible"}`;
+// function displayCommandDetails() {
+//     const commandIndex = parseInt(commandId, 10);
+//     if (!isNaN(commandIndex) && existingCommands[commandIndex]) {
+//         const command = existingCommands[commandIndex];
+//         // document.getElementById("dateCommandDetail").innerText = `Date: ${command.dateCommand || "Non disponible"}`;
+//         document.getElementById("dateCommandDetail").innerHTML = `<span style="color: red;">Doit à:</span> ${command.dateCommand || "Non disponible"}`;
 
-        document.getElementById("numBonCommandDetail").innerText = `Numéro de bon: ${command.numBonCommand || "Non disponible"}`;
-        document.getElementById("doitCommandDetail").innerText = `Doit: ${command.doitCommand || "Non disponible"}`;
-        document.getElementById("addresCommandDetail").innerText = `Adresse: ${command.addresCommand || "Non disponible"}`;
+//         document.getElementById("numBonCommandDetail").innerText = `Numéro de bon: ${command.numBonCommand || "Non disponible"}`;
+//         document.getElementById("doitCommandDetail").innerText = `Doit: ${command.doitCommand || "Non disponible"}`;
+//         document.getElementById("addresCommandDetail").innerText = `Adresse: ${command.addresCommand || "Non disponible"}`;
 
-        const temporaryCommandsDetail = document.getElementById("temporaryCommandsDetail");
-        temporaryCommandsDetail.innerHTML = "";
+//         const temporaryCommandsDetail = document.getElementById("temporaryCommandsDetail");
+//         temporaryCommandsDetail.innerHTML = "";
 
-        if (Array.isArray(command.temporaryCommands)) {
-            command.temporaryCommands.forEach((item, index) => {
-                const row = document.createElement("tr");
-                row.innerHTML = `
-                    <td style="text-align: center;">${item.designCommand || "Non disponible"}</td>
-                    <td style="text-align: center;">${item.quantite || "Non disponible"}</td>
-                    <td style="text-align: center;">${item.uniteCommand || "Non disponible"}</td>
-                    ${index === 0 ? `<td style="text-align: center;" rowspan="${command.temporaryCommands.length}">${command.observations || ""}</td>` : ""}
-                `;
-                // Ajout d'un événement de clic pour ouvrir la fenêtre modale
-                row.addEventListener("click", () => openModal(item, command));
-                temporaryCommandsDetail.appendChild(row);
-            });
-        }
-    } else {
-        alert("Commande non trouvée");
-    }
-}
+//         if (Array.isArray(command.temporaryCommands)) {
+//             command.temporaryCommands.forEach((item, index) => {
+//                 const row = document.createElement("tr");
+//                 row.innerHTML = `
+//                     <td style="text-align: center;">${item.designCommand || "Non disponible"}</td>
+//                     <td style="text-align: center;">${item.quantite || "Non disponible"}</td>
+//                     <td style="text-align: center;">${item.uniteCommand || "Non disponible"}</td>
+//                     ${index === 0 ? `<td style="text-align: center;" rowspan="${command.temporaryCommands.length}">${command.observations || ""}</td>` : ""}
+//                 `;
+//                 // Ajout d'un événement de clic pour ouvrir la fenêtre modale
+//                 row.addEventListener("click", () => openModal(item, command));
+//                 temporaryCommandsDetail.appendChild(row);
+//             });
+//         }
+//     } else {
+//         alert("Commande non trouvée");
+//     }
+// }
+
 // openModal pour ouvrir la fenêtre modale et préremplir les champs
 function openModal(item, command) {
     // Préremplir les champs de la fenêtre modale
@@ -399,41 +402,89 @@ window.html2canvas = html2canvas;
 
 
     // Affichage des détails de commande, avec vérification
+
     function displayCommandDetails() {
-        const commandId = getParameterByName('id');
-        const existingCommands = JSON.parse(localStorage.getItem("commands")) || [];
-        const commandIndex = parseInt(commandId, 10);
+    // Récupérer l'ID de la commande dans l'URL
+    const urlParams = new URLSearchParams(window.location.search);
+    const commandId = urlParams.get("id");
 
-        if (!isNaN(commandIndex) && existingCommands[commandIndex]) {
-            const command = existingCommands[commandIndex];
-            document.getElementById("dateCommandDetail").innerText = `DATE: ${command.dateCommand || "Non disponible"}`;
-            document.getElementById("numBonCommandDetail").innerText = `BON DE LIVRAISON: ${command.numBonCommand || "Non disponible"}`;
-            document.getElementById("doitCommandDetail").innerText = `Doit à: ${command.doitCommand || "Non disponible"}`;
-            document.getElementById("addresCommandDetail").innerText = ` ${command.addresCommand || " "}`;
+    // Récupérer les commandes depuis le localStorage
+    const existingCommands = JSON.parse(localStorage.getItem("commands")) || [];
 
-            const temporaryCommandsDetail = document.getElementById("temporaryCommandsDetail");
-            temporaryCommandsDetail.innerHTML = "";
+    // Vérifier si l'ID de la commande existe
+    if (commandId && existingCommands[commandId]) {
+        const command = existingCommands[commandId];
 
-            if (Array.isArray(command.temporaryCommands)) {
-                command.temporaryCommands.forEach((item, index) => {
-                    const row = document.createElement("tr");
-                    row.innerHTML = `
-                        <td style="text-align: center;">${item.designCommand || "Non disponible"}</td>
-                        <td style="text-align: center;">${item.quantite || "Non disponible"}</td>
-                        <td style="text-align: center;">${item.uniteCommand || "Non disponible"}</td>
-                        ${index === 0 ? `<td style="text-align: center;" rowspan="${command.temporaryCommands.length}">${command.observations || ""}</td>` : ""}
-                    `;
-                    row.addEventListener("click", () => openModal(item, command));
-                    temporaryCommandsDetail.appendChild(row);
-                });
-            }
-        } else {
-            alert("Commande non trouvée");
+        // Afficher les détails de la commande dans les éléments HTML
+        document.getElementById("dateCommandDetail").innerText = `DATE: ${command.dateCommand || "Non disponible"}`;
+        document.getElementById("numBonCommandDetail").innerText = `BON DE LIVRAISON: ${command.numBonCommand || "Non disponible"}`;
+        document.getElementById("doitCommandDetail").innerText = `Doit à: ${command.doitCommand || "Non disponible"}`;
+        document.getElementById("addresCommandDetail").innerText = `Adresse: ${command.addresCommand || "Non disponible"}`;
+
+        // Afficher les valeurs de bonCommandLieu et bonCommandLivr dans les éléments HTML
+        document.getElementById("lieugaucheli").textContent = command.bonCommandLieu || " ";
+        document.getElementById("lieudroiteli").textContent = command.bonCommandLivr || " ";
+
+        // Gestion des commandes temporaires
+        const temporaryCommandsDetail = document.getElementById("temporaryCommandsDetail");
+        temporaryCommandsDetail.innerHTML = "";
+
+        if (Array.isArray(command.temporaryCommands)) {
+            command.temporaryCommands.forEach((item, index) => {
+                const row = document.createElement("tr");
+                row.innerHTML = `
+                    <td style="text-align: center;">${item.designCommand || "Non disponible"}</td>
+                    <td style="text-align: center;">${item.quantite || "Non disponible"}</td>
+                    <td style="text-align: center;">${item.uniteCommand || "Non disponible"}</td>
+                    ${index === 0 ? `<td style="text-align: center;" rowspan="${command.temporaryCommands.length}">${command.observations || ""}</td>` : ""}
+                `;
+                row.addEventListener("click", () => openModal(item, command));
+                temporaryCommandsDetail.appendChild(row);
+            });
         }
+    } else {
+        alert("Commande non trouvée");
     }
+}
 
-    // Initialisation au chargement
-    window.onload = displayCommandDetails;
+// Assurez-vous d'appeler cette fonction lorsque la page de détails est chargée
+window.onload = displayCommandDetails;
+
+    // function displayCommandDetails() {
+    //     const commandId = getParameterByName('id');
+    //     const existingCommands = JSON.parse(localStorage.getItem("commands")) || [];
+    //     const commandIndex = parseInt(commandId, 10);
+
+    //     if (!isNaN(commandIndex) && existingCommands[commandIndex]) {
+    //         const command = existingCommands[commandIndex];
+    //         document.getElementById("dateCommandDetail").innerText = `DATE: ${command.dateCommand || "Non disponible"}`;
+    //         document.getElementById("numBonCommandDetail").innerText = `BON DE LIVRAISON: ${command.numBonCommand || "Non disponible"}`;
+    //         document.getElementById("doitCommandDetail").innerText = `Doit à: ${command.doitCommand || "Non disponible"}`;
+    //         document.getElementById("addresCommandDetail").innerText = ` ${command.addresCommand || " "}`;
+
+    //         const temporaryCommandsDetail = document.getElementById("temporaryCommandsDetail");
+    //         temporaryCommandsDetail.innerHTML = "";
+
+    //         if (Array.isArray(command.temporaryCommands)) {
+    //             command.temporaryCommands.forEach((item, index) => {
+    //                 const row = document.createElement("tr");
+    //                 row.innerHTML = `
+    //                     <td style="text-align: center;">${item.designCommand || "Non disponible"}</td>
+    //                     <td style="text-align: center;">${item.quantite || "Non disponible"}</td>
+    //                     <td style="text-align: center;">${item.uniteCommand || "Non disponible"}</td>
+    //                     ${index === 0 ? `<td style="text-align: center;" rowspan="${command.temporaryCommands.length}">${command.observations || ""}</td>` : ""}
+    //                 `;
+    //                 row.addEventListener("click", () => openModal(item, command));
+    //                 temporaryCommandsDetail.appendChild(row);
+    //             });
+    //         }
+    //     } else {
+    //         alert("Commande non trouvée");
+    //     }
+    // }
+
+    // // Initialisation au chargement
+    // window.onload = displayCommandDetails;
 
 // Transformation en image
 // window.html2canvas = html2canvas;

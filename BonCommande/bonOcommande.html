@@ -38,6 +38,14 @@
                 <label for="numboncommand">Numéro du Bon:</label>
                 <input type="text" id="numboncommand" name="numboncommand" placeholder="Numéro de commande" required>
 
+
+                <label for="bonCommandLivr">Bon de Livraison:</label>
+<input type="text" id="bonCommandLivr" name="bonCommandLivr" placeholder="Numéro du bon de livraison" required>
+
+<label for="bonCommandLieu">Lieu de Livraison:</label>
+<input type="text" id="bonCommandLieu" name="bonCommandLieu" placeholder="Lieu de livraison" required>
+
+
                 <label for="designcommand">Désignation:</label>
                 <input type="text" id="designcommand" name="designcommand" placeholder="Description du produit" required>
 
@@ -186,24 +194,6 @@
     // :::::::::::::::::::::::::::::::::::::::::::
     let selectedCommandId = null;  // Stocke l'ID de la commande sélectionnée
 
-// Fonction pour afficher les commandes
-// function displayCommands() {
-//     const existingCommands = JSON.parse(localStorage.getItem("commands")) || [];
-//     const commandDisplayList = document.getElementById("commandDisplayList");
-
-//     commandDisplayList.innerHTML = "";
-
-//     if (existingCommands.length > 0) {
-//         existingCommands.forEach((command, index) => {
-//             const li = document.createElement("li");
-//             li.innerHTML = ` ${command.doitCommand},  ${command.dateCommand}`;
-//             li.addEventListener("click", () => showDetailsPopup(index));  // Passer l'index de la commande
-//             commandDisplayList.appendChild(li);
-//         });
-//     } else {
-//         commandDisplayList.innerHTML = "<li>Aucune commande enregistrée.</li>";
-//     }
-// }
 function displayCommands() {
     const existingCommands = JSON.parse(localStorage.getItem("commands")) || [];
     const commandDisplayList = document.getElementById("commandDisplayList");
@@ -330,13 +320,17 @@ function enregistrerCommand(event) {
     const designCommand = document.getElementById("designcommand").value;
     const uniteCommand = document.getElementById("unitecommand").value;
     const quantiteCommand = document.getElementById("quandcommand").value; // Nouvelle ligne
+    const bonCommandLivr = document.getElementById("bonCommandLivr").value; // Nouvelle ligne
+    const bonCommandLieu = document.getElementById("bonCommandLieu").value; // Nouvelle ligne
 
-    if (dateCommand && doitCommand && numBonCommand && (designCommand || temporaryCommands.length > 0)) {
+    if (dateCommand && doitCommand && numBonCommand && bonCommandLieu && bonCommandLivr &&(designCommand || temporaryCommands.length > 0)) {
         const newCommand = {
             dateCommand,
             doitCommand,
             addresCommand: document.getElementById("addrescommand").value || "",
             numBonCommand,
+            bonCommandLieu,
+            bonCommandLivr,
             temporaryCommands: [
                 ...temporaryCommands,
                 ...(designCommand && uniteCommand && quantiteCommand ? [{ designCommand, uniteCommand, quantite: quantiteCommand }] : [])

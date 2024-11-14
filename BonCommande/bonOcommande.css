@@ -123,124 +123,79 @@ th, td {
 
 
 /* Pop-up container */
+/* Style pour la popup entière */
 .popupcommand {
-    display: none; /* Hidden by default */
-    position: fixed; /* Position it fixed on screen */
-    left: 0;
+    display: none; /* Masqué par défaut */
+    position: fixed;
     top: 0;
+    left: 0;
     width: 100%;
     height: 100%;
-    background-color: rgba(0, 0, 0, 0.5); /* Semi-transparent background */
-    z-index: 1; /* On top of other elements */
+    background-color: rgba(0, 0, 0, 0.6); /* Fond semi-transparent */
+    z-index: 1000;
 }
 
-/* Pop-up content */
+/* Style pour le contenu de la popup */
 .popup-content {
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%); /* Center the pop-up */
-    background-color: #fff;
-    padding: 30px;
-    border-radius: 8px;
+    position: relative;
+    margin: 5% auto;
     width: 90%;
-    max-width: 500px;
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
-    animation: fadeIn 0.5s ease-out;
+    max-width: 600px;
+    background-color: #fff;
+    border-radius: 8px;
+    padding: 20px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    max-height: 80vh; /* Limite la hauteur */
+    overflow-y: auto; /* Ajoute un défilement vertical */
 }
 
-/* Title */
-.popup-content h2 {
-    text-align: center;
-    color: darkslateblue;
-    margin-bottom: 20px;
-    font-size: 22px;
-}
-
-/* Close button */
+/* Style pour le bouton de fermeture */
 .close {
     position: absolute;
-    top: 25px;
-    right: 20px;
-    font-size: 30px;
-    font-weight: bold;
-    color: #aaa;
+    top: 10px;
+    right: 10px;
+    font-size: 24px;
     cursor: pointer;
+    color: darkslateblue;
 }
 
-.close:hover,
-.close:focus {
-    color: black;
-    text-decoration: none;
-}
-
-/* Form labels */
-label {
-    font-size: 16px;
-    margin-bottom: 5px;
+/* Style pour les champs de formulaire */
+.popup-content label {
     display: block;
-    color: #333;
+    margin: 10px 0 5px;
+    font-weight: bold;
+    color: darkslateblue;
 }
 
-/* Form fields */
-input[type="text"],
-input[type="number"],
-select {
+.popup-content input,
+.popup-content select {
     width: 100%;
-    padding: 10px;
-    margin-bottom: 15px;
+    padding: 8px;
     border: 1px solid #ccc;
-    border-radius: 5px;
-    font-size: 16px;
+    border-radius: 4px;
+    margin-bottom: 10px;
     box-sizing: border-box;
 }
 
-/* Read-only input styling */
-input[readonly] {
-    background-color: #f5f5f5;
-}
-
-/* Button group */
 .button-group {
     display: flex;
     justify-content: space-between;
-    gap: 10px;
+    margin-top: 20px;
 }
 
-/* Buttons */
-button {
-    background-color: darkslateblue;
-    color: white;
-    padding: 12px 20px;
-    border: none;
-    border-radius: 5px;
-    font-size: 16px;
-    cursor: pointer;
+.button-group button {
     width: 48%;
+    padding: 10px;
+    background-color: darkslateblue;
+    color: #fff;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-weight: bold;
 }
 
-button:hover {
-    background-color: #5a5a8b;
-}
-
-button[type="submit"] {
-    background-color: green;
-}
-
-button[type="submit"]:hover {
-    background-color: darkgreen;
-}
-
-/* Fade-in animation */
-@keyframes fadeIn {
-    from {
-        opacity: 0;
-        transform: translate(-50%, -50%) scale(0.8);
-    }
-    to {
-        opacity: 1;
-        transform: translate(-50%, -50%) scale(1);
-    }
+.button-group button:hover {
+    background-color: #4b0082;
 }
 
 
