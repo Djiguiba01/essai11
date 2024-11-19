@@ -1,0 +1,463 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bon de Livraison</title>
+    <link rel="stylesheet" href="../index.css">
+    <link rel="stylesheet" href="bonLivraison.css">
+    <link href="https://fonts.googleapis.com/css2?family=Marck+Script&display=swap" rel="stylesheet">
+<style>
+    
+</style>
+</head>
+<body>
+
+    <div class="menu-container">
+        <header class="menu-header">
+            <img src="images/logo22.png" alt="Logo" class="header-logo">
+            <h1>Groupe Sankore</h1>
+            <div class="menu-icon" id="menuToggle">&#9776;</div>
+        </header>
+        <div class="menu-content">
+            <aside class="menu-aside" id="menuAside">
+                <ul>
+                    <li><a href="../index.html" class="card" data-path="stock">Stock</a></li>
+                    <li><a href="../Commandes/commandes.html" class="card" data-path="commandes">Commandes</a></li>
+                    <li><a href="../BonLivraison/bonLivraison.html" class="card" data-path="livraisons">Livraisons</a></li>
+                    <li><a href="../Ventes/ventes.html" class="card" data-path="ventes">Ventes</a></li>
+                </ul>
+            </aside>
+            <div class="popup-menu" id="popupMenu" style="display: none;">
+                <ul>
+                    <li><a href="../index.html" class="popup-card" data-path="stock">Stock</a></li>
+                    <li><a href="../Commandes/commandes.html" class="popup-card" data-path="commandes">Commandes</a></li>
+                    <li><a href="../bonLivraison.html" class="popup-card" data-path="livraisons">Livraisons</a></li>
+                    <li><a href="../Ventes/ventes.html" class="popup-card" data-path="ventes">Ventes</a></li>
+                </ul>
+            </div>
+            <main class="menu-main" id="mainContent">
+                <div class="stock-card">
+                    <h2>AJOUTER UNE COMMANDE</h2>
+                    <button class="add-product-button" onclick="openPopup()">Ajouter</button>
+                </div>
+                <!-- <div class="cardCommand">
+                    <span class="card-text" >AJOUTER UNE COMMANDE</span>
+                    <button class="card-button" onclick="openPopup()">Ajouter</button>
+                </div> -->
+            
+            
+                <!-- Overlay -->
+                <div id="popupOverlay" onclick="closePopup()"></div>
+                 <!-- Pop-up Commande -->
+                <div class="popupcommand" id="popupcommand">
+                    <div class="popup-content">
+                        <span class="close" onclick="closePopup()">&times;</span>
+                        <h2 style="text-align: center; color: darkslateblue;">AJOUTER UNE COMMANDE</h2>
+                        <form id="commandForm" onsubmit="enregistrerCommand(event)">
+                            <label for="datecommand">Date de Commande:</label>
+                            <input type="text" id="datecommand" name="datecommand" readonly required>
+            
+                            <label for="doitcommand">Doit à:</label>
+                            <input type="text" id="doitcommand" name="doitcommand" placeholder="Destinataire" required>
+            
+                            <label for="addrescommand">Adresse:</label>
+                            <input type="text" id="addrescommand" name="addrescommand" placeholder="Adresse">
+            
+                            <label for="numboncommand">Bon de livraison:</label>
+                            <input type="text" id="numboncommand" name="numboncommand" placeholder="Numéro du bon de livraison" required>
+            
+            
+                            <label for="bonCommandLivr">Bon de Commande:</label>
+            <input type="text" id="bonCommandLivr" name="bonCommandLivr" placeholder="Numéro du bon de commande" required>
+            
+            <label for="bonCommandLieu">Lieu de Livraison:</label>
+            <input type="text" id="bonCommandLieu" name="bonCommandLieu" placeholder="Lieu de livraison" required>
+            
+            
+                            <label for="designcommand">Désignation:</label>
+                            <input type="text" id="designcommand" name="designcommand" placeholder="Description du produit" required>
+            
+                            <label for="quandcommand">Quantité:</label>
+                            <input type="number" min="1" id="quandcommand" name="quandcommand" placeholder="Quantité du produit" required>
+            
+            
+                            <label for="unitecommand">Unité:</label>
+                            <select id="unitecommand" name="unitecommand" required>
+                                <option value="">Sélectionnez une unité</option>
+                                <option value="U">U</option>
+                                <option value="kg">Kg</option>
+                                <option value="boite">Boîte</option>
+                            </select>
+            
+                            <div class="button-group">
+                                <button type="button" onclick="nextStep()">Suivant</button>
+                                <button type="submit" id="enregistrercommand">Enregistrer</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            
+                <div id="commandList">
+                    <h3 style="text-align: center; color: darkslateblue;">COMMANDES ENREGISTREES</h3>
+                    <ul id="commandDisplayList"></ul>
+                </div>
+                
+            
+                <!-- Conteneur pour afficher les commandes -->
+            <!-- <ul id="commandDisplayList"></ul> -->
+            
+            <!-- Pop-up de détails -->
+            <div id="popupDetails" style="display: none; position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); padding: 20px; background-color: #fff;">
+                <!-- <p id="commandIdDisplay">ID: </p> -->
+                 <h2 style="text-align: center; padding-bottom: 3%; color: darkslateblue;">Choississez une option</h2>
+                 <!-- Icone de fermeture -->
+                <span class="close-btn" onclick="closeDetailsPopup()">×</span>
+                 <div class="butonsupp">
+                    <button onclick="viewDetails()">Voir Détail</button>
+                    <button onclick="deleteCommand()" style="background-color: red;">Supprimer</button>
+                 </div>
+                
+                <!-- <button onclick="closeDetailsPopup()">Fermer</button> -->
+            </div>
+            
+                <!-- ::::::::::::::::::::::::::::::: -->
+                <div  class="container" style="display: none;">
+                    <header>
+                        <div class="logo">
+                            <img src="../images/logo1.png" alt="GROUPE SANKORE Logo">
+                        </div>
+                        <div class="header-text">
+                            <!-- <h1>GROUPE SANKORE</h1> -->
+                            <p style="color: red;">Infrastructure - Développement</p>
+                            <p style="text-align: center;">BTP - Agrobusiness</p>
+                            <p  style="color: red;">Informatique - Développement</p>
+                            <p style="text-align: center;">Mobilier - Immobilier</p>
+                        </div>
+                    </header>
+                    
+                    <section class="delivery-info">
+                        <div class="gauchedat" style="padding-top: 8%;">
+                            <p  style="border: 2px solid black;  padding: 5px;"><strong>Date:</strong > LE 15/10/2024</p>
+                        <p style="border: 2px solid black;  padding: 5px;"><strong>Bon de Livraison :</strong> BL-2024-0429-N_R</p>
+                        <!-- <p><strong>Bon de Livraison de Remplacement :</strong> 5959678/SEGOU 076/CHA</p> -->
+                        </div>
+                        <div class="doitedat" style=" border: 2px solid black; padding: 5px; width: 30%;">
+                            <p>Doit à: </p>
+                            <p>Fao dd dffff df kkkkjjjj</p>
+            
+                            <p>Lorem ipsum dolor sit amet consectetur 
+                                adipisicing elit. Nihil quasi, alias culpa magnam 
+                                </p>
+                        </div>
+                    </section>
+                    
+                    <section class="table-section">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th style="text-align: center; background-color: rgb(167, 167, 228);">Désignation</th>
+                                    <th style="text-align: center; background-color: rgb(167, 167, 228);">Qté</th>
+                                    <th style="text-align: center; background-color: rgb(167, 167, 228);">Unité</th>
+                                    <th style="text-align: center; background-color: rgb(167, 167, 228);">Observateurs</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>Achat de numéro Orange Volet de gain sur le 676CHA livrés à Ségou</td>
+                                    <td>1</td>
+                                    <td>10</td> <!-- Nouvelle colonne Quantité -->
+                                </tr>
+                                <tr>
+                                    <td>Achat de numéro Orange Volet de gain sur le 676CHA livrés à Bamako</td>
+                                    <td>1</td>
+                                    <td >20</td> <!-- Nouvelle colonne Quantité -->
+                                </tr>                   
+                                <!-- Ajoutez plus de lignes si nécessaire -->
+                            </tbody>
+                        </table>
+                    </section>
+                    
+                    
+                    <section class="footer-info">
+                      <div class="infotout" style="display: flex; justify-content: space-between; padding-top: 1%; padding-bottom: 15%;">
+                        <div class="infogauche">
+                            <p style="text-decoration: underline;"><strong>Pour Reception:</strong> </p>
+                            
+                           </div>
+                
+                           <div class="infodroite">
+                            <p style="text-decoration: underline;"><strong>Le Fournisseur:</strong> </p>
+                           </div>
+                      </div>
+                    </section>
+                    
+                    <footer>
+                        <p style="color: blue;"><strong style="color: red;">Direction Generale: </strong> Bamako-Mali- Hamdallaye ACI 2000 Immeuble ABK-6 B103</p>
+                        <p>Tél: +223 76 02 34 71 6 66 02 34 71 - 61 96 17 94 - 20 74 04 48 / E-mail: sankoreservices@gmail.com</p>
+                        <p>www.sankoreservices.com - sankoreservices@yahoo.fr </p>
+                        <p style="color: blue;"><strong style="color: red;">Bureau de Mopti-Sévaré:</strong>
+                            Socoura en face de l'IFP de Sévaré</p>
+                            <p style="color: blue;">
+                                Tél: +223 91 00 00 47 - 91 00 00 48 - 20 29 17 14 - 21 42 19 17
+                            </p>
+                            <p style="color: red;"><strong style="color: rgb(15, 146, 85);">Bureau de Tombouctou:</strong>
+                                Sareikeina Albamé-Derrière la Mairie de Tbt-tel: 66 69 55 92
+                            </p>
+            
+                            <p style="color: blue;"><strong style="color: red;">Bureau de Gao:</strong>
+                                Aldjanabandia-4ème Quartier à coté de la Mare - Tél: 76 18 43 97
+                            </p>
+                            <p style="color: blue;"> <strong style="font-weight: bold;">NINA:</strong>
+                            42009194223006T - <strong style="font-weight: bold;">RCCM:</strong> MA.BKO. 2020.B B5. DU 03/01/2020 - <strong>NIF:</strong>082247104J</p>
+                        </footer>
+                    
+                </div>
+            
+            
+
+
+            </main>
+
+    </div>
+    </div>
+
+
+    <!-- :::::::::::::::::::::::::::::: -->
+   
+</body>
+<script src="../index.js"></script>
+<script>
+    // Fonction pour marquer le menu sélectionné dans les deux menus (principal et popup)
+    function highlightSelectedMenu() {
+        const menuLinks = document.querySelectorAll('.menu-aside ul li a, .popup-menu ul li a');
+        const currentPath = window.location.pathname.split('/').pop(); // Récupère le nom de la page actuelle
+
+        menuLinks.forEach(link => {
+            const linkPath = link.getAttribute('href').split('/').pop(); // Récupère le nom de la page du lien
+            if (linkPath === currentPath) {
+                link.classList.add('selected'); // Ajoute la classe 'selected' si l'URL correspond
+            } else {
+                link.classList.remove('selected'); // Retire la classe 'selected' si l'URL ne correspond pas
+            }
+        });
+    }
+
+    // Appelle la fonction pour marquer le menu sélectionné
+    highlightSelectedMenu();
+
+    // Code pour afficher/masquer le menu popup
+    const menuToggle = document.getElementById('menuToggle');
+    const popupMenu = document.getElementById('popupMenu');
+
+    menuToggle.addEventListener('click', () => {
+        popupMenu.style.display = popupMenu.style.display === 'none' ? 'block' : 'none';
+    });
+</script>
+
+<script>
+    // :::::::::::::::::::::::::::::::::::::::::::
+    let selectedCommandId = null;  // Stocke l'ID de la commande sélectionnée
+
+function displayCommands() {
+    const existingCommands = JSON.parse(localStorage.getItem("commands")) || [];
+    const commandDisplayList = document.getElementById("commandDisplayList");
+
+    commandDisplayList.innerHTML = "";
+
+    if (existingCommands.length > 0) {
+        existingCommands.forEach((command, index) => {
+            const li = document.createElement("li");
+            
+            // Créer un conteneur div pour les commandes et les dates
+            const commandDetails = document.createElement("div");
+            commandDetails.style.display = "flex";
+            commandDetails.style.justifyContent = "space-between";
+            commandDetails.style.width = "100%";  // Assurez-vous qu'il occupe toute la largeur
+
+            // Créer et ajouter les éléments de commande
+            const doitCommand = document.createElement("span");
+            doitCommand.textContent = command.doitCommand;
+
+            const dateCommand = document.createElement("span");
+            dateCommand.textContent = command.dateCommand;
+
+            // Ajouter les éléments dans le conteneur
+            commandDetails.appendChild(doitCommand);
+            commandDetails.appendChild(dateCommand);
+
+            // Ajouter le conteneur au <li>
+            li.appendChild(commandDetails);
+
+            // Ajouter un événement pour afficher les détails de la commande
+            li.addEventListener("click", () => showDetailsPopup(index));
+
+            // Ajouter l'élément li à la liste
+            commandDisplayList.appendChild(li);
+        });
+    } else {
+        commandDisplayList.innerHTML = "<li>Aucune commande enregistrée.</li>";
+    }
+}
+
+
+// Fonction pour afficher le pop-up de détails
+function showDetailsPopup(commandIndex) {
+    selectedCommandId = commandIndex;  // Stocke l'ID de la commande sélectionnée
+    // document.getElementById("commandIdDisplay").innerText = `ID: ${selectedCommandId}`;
+    document.getElementById("popupDetails").style.display = "block";
+}
+
+// Fonction pour afficher les détails de la commande
+function viewDetails() {
+    if (selectedCommandId !== null) {
+        // Redirige vers une autre page ou affiche les détails
+        window.location.href = `detailPage.html?id=${selectedCommandId}`;  // Redirige vers une page de détail
+    }
+}
+
+// Fonction pour supprimer une commande
+function deleteCommand() {
+    if (selectedCommandId !== null) {
+        const existingCommands = JSON.parse(localStorage.getItem("commands")) || [];
+        existingCommands.splice(selectedCommandId, 1);  // Supprime la commande sélectionnée
+        localStorage.setItem("commands", JSON.stringify(existingCommands));  // Sauvegarde les modifications
+        alert("Commande supprimée avec succès.");
+        closeDetailsPopup();
+        displayCommands();  // Actualise la liste des commandes
+    }
+}
+
+
+
+
+
+
+    // ::::::::::::::::::::::::::::::::::::::::::
+    let temporaryCommands = [];
+
+// Fonction pour ouvrir le pop-up commande
+function openPopup() {
+    document.getElementById("popupcommand").style.display = "flex";
+    const dateField = document.getElementById("datecommand");
+    const today = new Date();
+    const dateString = today.toISOString().split('T')[0];
+    dateField.value = dateString;
+}
+
+// Fonction pour fermer le pop-up commande
+function closePopup() {
+    document.getElementById("popupcommand").style.display = "none";
+}
+
+// Fonction pour le bouton "Suivant" - sauvegarde les données temporairement et vide les champs
+function nextStep() {
+    const designCommand = document.getElementById("designcommand").value;
+    const uniteCommand = document.getElementById("unitecommand").value;
+    const quantiteCommand = document.getElementById("quandcommand").value; // Nouvelle ligne
+
+    if (designCommand && uniteCommand && quantiteCommand) { // Vérifier si la quantité est remplie
+        temporaryCommands.push({
+            designCommand,
+            uniteCommand,
+            quantite: quantiteCommand // Ajouter la quantité dans l'objet temporaire
+        });
+
+        // Réinitialiser les champs après la sauvegarde
+        document.getElementById("designcommand").value = "";
+        document.getElementById("unitecommand").value = "";
+        document.getElementById("quandcommand").value = ""; // Réinitialiser la quantité
+
+        alert("Données sauvegardées temporairement.");
+    } else {
+        alert("Veuillez remplir tous les champs obligatoires.");
+    }
+}
+
+
+// Fonction pour le bouton "Enregistrer" - sauvegarde la commande dans localStorage
+function enregistrerCommand(event) {
+    event.preventDefault();
+
+    const dateCommand = document.getElementById("datecommand").value;
+    const doitCommand = document.getElementById("doitcommand").value;
+    const numBonCommand = document.getElementById("numboncommand").value;
+    const designCommand = document.getElementById("designcommand").value;
+    const uniteCommand = document.getElementById("unitecommand").value;
+    const quantiteCommand = document.getElementById("quandcommand").value; // Nouvelle ligne
+    const bonCommandLivr = document.getElementById("bonCommandLivr").value; // Nouvelle ligne
+    const bonCommandLieu = document.getElementById("bonCommandLieu").value; // Nouvelle ligne
+
+    if (dateCommand && doitCommand && numBonCommand && bonCommandLieu && bonCommandLivr &&(designCommand || temporaryCommands.length > 0)) {
+        const newCommand = {
+            dateCommand,
+            doitCommand,
+            addresCommand: document.getElementById("addrescommand").value || "",
+            numBonCommand,
+            bonCommandLieu,
+            bonCommandLivr,
+            temporaryCommands: [
+                ...temporaryCommands,
+                ...(designCommand && uniteCommand && quantiteCommand ? [{ designCommand, uniteCommand, quantite: quantiteCommand }] : [])
+            ]
+        };
+
+        const existingCommands = JSON.parse(localStorage.getItem("commands")) || [];
+        existingCommands.push(newCommand);
+        localStorage.setItem("commands", JSON.stringify(existingCommands));
+
+        alert("Commande enregistrée avec succès.");
+
+        document.getElementById("commandForm").reset();
+        temporaryCommands = [];
+        closePopup();
+
+        displayCommands();
+    } else {
+        alert("Veuillez remplir tous les champs obligatoires.");
+    }
+}
+
+
+
+// Fonction pour fermer le pop-up des détails
+function closeDetailsPopup() {
+    document.getElementById("popupDetails").style.display = "none";
+}
+
+// Afficher les commandes au chargement de la page
+window.onload = function() {
+    displayCommands();
+};
+
+
+
+    // :::::::::::::::::::::::::::
+    document.addEventListener("DOMContentLoaded", function() {
+        const table = document.querySelector("table tbody");
+        const rows = table.querySelectorAll("tr");
+        const rowspanCount = rows.length;
+
+        // Fusionner la cellule Observations
+        const observationCell = document.createElement("td");
+        observationCell.rowSpan = rowspanCount;
+        observationCell.innerHTML = "";
+
+        // Insérer la cellule dans la première ligne
+        const firstRow = rows[0];
+        firstRow.appendChild(observationCell);
+
+        // Supprimer les autres cellules d'observation
+        for (let i = 1; i < rowspanCount; i++) {
+            const row = rows[i];
+            const observationCellToRemove = row.querySelector("td:nth-child(4)");
+            if (observationCellToRemove) {
+                observationCellToRemove.remove();
+            }
+        }
+    });
+
+
+</script>
+
+</html>

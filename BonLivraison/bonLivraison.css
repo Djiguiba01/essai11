@@ -1,10 +1,84 @@
-* {
+/* * {
     margin: 0;
     padding: 0;
     box-sizing: border-box;
     font-family: Arial, sans-serif;
+} */
+/* Styles par défaut pour bureau ou grands écrans */
+.stock-card {
+    justify-content: space-between;
+    display: flex;
+    background-color: #f9f9f9;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    margin: 20px;
+    text-align: center;
+    /* max-width: 500px;  */
+    margin-left: auto;
+    margin-right: auto;
 }
 
+.stock-card h2 {
+    margin-bottom: 20px;
+    color: #333;
+    font-size: 24px; /* Taille de police pour grands écrans */
+}
+/* Styles pour les petits écrans (tablettes et téléphones) */
+@media (max-width: 768px) {
+    .stock-card {
+        padding: 15px;
+        margin: 15px;
+        max-width: 100%; /* La carte prend toute la largeur de l'écran */
+    }
+
+    .stock-card h2 {
+        font-size: 20px; /* Réduire la taille de la police sur tablette */
+    }
+
+    .product-list{
+        padding: 15px;
+    }
+
+    .add-product-button {
+        padding: 8px 15px;
+        font-size: 14px; /* Réduire la taille de la police du bouton sur tablette */
+    }
+    /* .menu-main{
+        padding: 20px;
+    } */
+}
+
+/* Styles pour très petits écrans (mobiles) */
+@media (max-width: 480px) {
+    .stock-card {
+        padding: 10px;
+        margin: 10px;
+    }
+
+    .stock-card h2 {
+        font-size: 18px; /* Taille de police plus petite pour mobile */
+    }
+
+    .add-product-button {
+        padding: 6px 10px;
+        font-size: 12px; /* Réduire encore la taille de la police sur mobile */
+    }
+}
+.add-product-button {
+    padding: 10px 20px;
+    background-color: darkslateblue;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 16px;
+    transition: background-color 0.3s ease;
+}
+
+.add-product-button:hover {
+    background-color: red; /* Changement de couleur lors du survol */
+}
 .container {
     width: 80%;
     margin: 20px auto;
