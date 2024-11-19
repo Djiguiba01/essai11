@@ -422,8 +422,8 @@ window.html2canvas = html2canvas;
         document.getElementById("addresCommandDetail").innerText = `Adresse: ${command.addresCommand || "Non disponible"}`;
 
         // Afficher les valeurs de bonCommandLieu et bonCommandLivr dans les éléments HTML
-        document.getElementById("lieugaucheli").textContent = command.bonCommandLieu || " ";
-        document.getElementById("lieudroiteli").textContent = command.bonCommandLivr || " ";
+        document.getElementById("lieugaucheli").textContent = command.bonCommandLivr || " ";
+        document.getElementById("lieudroiteli").textContent = command.bonCommandLieu || " ";
 
         // Gestion des commandes temporaires
         const temporaryCommandsDetail = document.getElementById("temporaryCommandsDetail");
